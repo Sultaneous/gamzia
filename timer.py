@@ -7,10 +7,9 @@
 # from timer import Timer
 # timer = Timer()
 # timer.start()
-# ... do measurable stuf ...
+# ... do measurable stuff ...
 # timer.stop()
 # print(f"Time taken: {timer.elapsed} seconds.")
-
 
 from time import perf_counter
 
