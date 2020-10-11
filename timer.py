@@ -75,7 +75,7 @@ def UnitTestPeek():
       print(f"Time from start to now: {p:.2f}\r", end='', flush=True)
    x=int(p)
    print()
-   
+
    # Assert
    try:
       assert x==rounds, f"Required {rounds}, got {x}."
@@ -106,14 +106,14 @@ def UnitTestStopNoStart():
 def UnitTestStartNoStop():
    # Setup
    print()
-   print("Testing break case: stop without start.  Should return ~2s interval.")
+   print("Testing break case: start without stop.  Should return ~2s interval.")
 
    # Test
    timer=Timer()
    timer.start()
    time.sleep(2)
    e=timer.elapsed()
-   print (f"Stop without start: {e:.4f} seconds.")
+   print (f"Start without stop: {e:.4f} seconds.")
 
    # Assert
    try:
