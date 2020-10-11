@@ -95,7 +95,7 @@ print(f"{C.cly}{C.bdr}This is light yellow foreground on a dark red background."
 
 s=f"{C.clb}This is blue text and this is {C.clg}{C.bdg}green on dark green.")
 print("With colour: "+s)
-print("Without colour: "+C.cstrip(s))
+print("Without colour: "+Colours.cstrip(s))
 ```
 
 Note that to effectively use text colouring, you simply insert the text format string in the appropriate location in the string to enable it.
@@ -105,7 +105,7 @@ One does not need to turn off the colour before applying a new colour; the previ
 
 | Method | Parameters | Summary |
 |:-----|:--------|:-------|
-| cstrip | Colour formatted string | This is the only method in the class. It strips all ANSI colour codes out of a string, returning the 'clean' string. |
+| cstrip | Colour formatted string | This is the only method in the class. It strips all ANSI colour codes out of a string, returning the 'clean' string. It is a static method so can be called without a class instance, ie: Colours.cstrip()|
 
 ##### Foreground (Text) Colour Strings
 | String | Meaning |
@@ -170,7 +170,11 @@ One does not need to turn off the colour before applying a new colour; the previ
 | String | Meaning |
 |:------ | :------ |
 | off | Foreground & Background off |
-
+| no | Foreground light yellow, background dark red |
+| yes | Foreground light green, background dark green |
+| old | Foreground light yellow, background dark blue |
+| retro | Foreground white, background black |
+| type | Foreground black, background white |
 
 #### Misc
 
