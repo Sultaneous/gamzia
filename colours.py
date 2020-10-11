@@ -40,9 +40,9 @@ class Colours:
       cdb=""       # Color Dark Blue
       cdm=""       # Color Dark Magenta
       cdc=""       # Color Dark Cyan
-      clgy=""      # Color Light Gray
-
       cdgy=""      # Color Dark Gray
+
+      clgy=""      # Color Light Gray
       clr=""       # Color Light Red
       clg=""       # Color Light Green
       cly=""       # Color Light Yellow
@@ -62,9 +62,9 @@ class Colours:
       bdb=""       # Background Color Dark Blue
       bdm=""       # Background Color Dark Magenta
       bdc=""       # Background Color Dark Cyan
-      blgy=""      # Background Color Light Gray
-  
       bdgy=""     # Background Color Dark Gray
+
+      blgy=""      # Background Color Light Gray
       blr=""      # Background Color Light Red
       blg=""      # Background Color Light Green
       bly=""      # Background Color Light Yellow
@@ -110,9 +110,9 @@ class Colours:
       cdb="\033[34m"       # Color Dark Blue
       cdm="\033[35m"       # Color Dark Magenta
       cdc="\033[36m"       # Color Dark Cyan
-      clgy="\033[37m"      # Color Light Gray
-
       cdgy="\033[90m"      # Color Dark Gray
+
+      clgy="\033[37m"      # Color Light Gray
       clr="\033[91m"       # Color Light Red
       clg="\033[92m"       # Color Light Green
       cly="\033[93m"       # Color Light Yellow
@@ -132,9 +132,9 @@ class Colours:
       bdb="\033[44m"       # Background Color Dark Blue
       bdm="\033[45m"       # Background Color Dark Magenta
       bdc="\033[46m"       # Background Color Dark Cyan
-      blgy="\033[47m"      # Background Color Light Gray
-
       bdgy="\033[100m"     # Background Color Dark Gray
+
+      blgy="\033[47m"      # Background Color Light Gray
       blr="\033[101m"      # Background Color Light Red
       blg="\033[102m"      # Background Color Light Green
       bly="\033[103m"      # Background Color Light Yellow
@@ -146,7 +146,7 @@ class Colours:
       # Turns off only the background color
       boff="\033[49m"      # Background Color Off
 
-      # Macro strings 
+      # Macro strings
       # Master off switch turns off color and bacground in one mnemonic
       off=coff+boff
       no=cly+bdr
@@ -171,11 +171,11 @@ class Colours:
       shif="\033[28m"      # Style Hidden Off
 
    # Lists of colour and backgrounds
-   listcall = [f"{cbl}", f"{cdr}", f"{cdg}", f"{cdy}", f"{cdb}", f"{cdm}", f"{cdc}", f"{clgy}",
-   f"{clr}", f"{clg}", f"{cly}", f"{clb}", f"{clm}", f"{clc}", f"{cwh}", f"{cdgy}", f"{coff}"]
+   listcall = [f"{cbl}", f"{cdr}", f"{cdg}", f"{cdy}", f"{cdb}", f"{cdm}", f"{cdc}", f"{cdgy}",
+   f"{clr}", f"{clg}", f"{cly}", f"{clb}", f"{clm}", f"{clc}", f"{cwh}", f"{clgy}", f"{coff}"]
 
-   listball = [f"{bbl}", f"{bdr}", f"{bdg}", f"{bdy}", f"{bdb}", f"{bdm}", f"{bdc}", f"{blgy}",
-   f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{bdgy}", f"{boff}"]
+   listball = [f"{bbl}", f"{bdr}", f"{bdg}", f"{bdy}", f"{bdb}", f"{bdm}", f"{bdc}", f"{bdgy}",
+   f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{blgy}", f"{boff}"]
 
    listsall = [f"{sbo}", f"{sdi}", f"{sun}", f"{sbl}", f"{sre}", f"{shi}",
    f"{sbof}", f"{sdif}", f"{sunf}", f"{sblf}", f"{sref}", f"{shif}"]
@@ -194,15 +194,17 @@ class Colours:
       for s in Colours.listsall:
          label=label.replace(s, "")
       return (label)
+
 #End of class
 #**************************************************************************
-   
-# Test method.  No need for unit tests with this Class
+
+# Test method.  No need for unit tests with this Class; just illustrate the 
+# colours.
 def doTest():
    C = Colours()
    if (C.clc==""):
       print ("This OS does not support ANSI colour in terminals.")
-      print ("Test will execute, but output should be clean and colourless.")
+      print ("Test will execute, but output should be colourless.")
       print()
 
    print()
