@@ -70,6 +70,8 @@ python timer.py
 
 ...will execute the Timer unit test cases.
 
+***
+
 ### Colours
 
 Colours provides ansi colour codes for formatting text strings with colour adornments. 
