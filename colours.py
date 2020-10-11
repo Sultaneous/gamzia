@@ -1,9 +1,13 @@
 #!/usr/bin/python3
 
+# Colours module by Karim Sultan April 2015.
+
 # Version KAS 150412
 # This script defines a set of constants for foreground colors,
 # background colors, and console text styles to be used in Python
 # console scripts.
+#
+# KSU 201010 Added macro modes + test case.
 #
 # To use this script in python:
 #
@@ -72,8 +76,14 @@ class Colours:
       # Turns off only the background color
       boff=""      # Background Color Off
 
+      # Macro strings 
       # Master off switch turns off color and bacground in one mnemonic
       off=coff+boff
+      no=cly+bdr
+      yes=clg+bdg
+      old=cly+bdb
+      retro=cwh+bbl
+      paper=cbl+bwh
 
       # Styles
       sbo=""        # Style Bold
@@ -136,8 +146,14 @@ class Colours:
       # Turns off only the background color
       boff="\033[49m"      # Background Color Off
 
+      # Macro strings 
       # Master off switch turns off color and bacground in one mnemonic
       off=coff+boff
+      no=cly+bdr
+      yes=clg+bdg
+      old=cly+bdb
+      retro=cwh+bbl
+      paper=cbl+bwh
 
       # Styles
       sbo="\033[1m"        # Style Bold
@@ -159,11 +175,12 @@ class Colours:
    f"{clr}", f"{clg}", f"{cly}", f"{clb}", f"{clm}", f"{clc}", f"{cwh}", f"{cdgy}", f"{coff}"]
 
    listball = [f"{bbl}", f"{bdr}", f"{bdg}", f"{bdy}", f"{bdb}", f"{bdm}", f"{bdc}", f"{blgy}",
-   f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{bdgy}", f"{boff}",
-   f"{off}"]
+   f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{bdgy}", f"{boff}"]
 
    listsall = [f"{sbo}", f"{sdi}", f"{sun}", f"{sbl}", f"{sre}", f"{shi}",
    f"{sbof}", f"{sdif}", f"{sunf}", f"{sblf}", f"{sref}", f"{shif}"]
+
+   listmall = [f"{no}", f"{yes}", f"{old}", f"{retro}", f"{paper}", f"{off}"]
 
    # Static method to remove colour codes from a formatted string
    # This could probably be done more compactly with a regex, but this way
@@ -177,4 +194,60 @@ class Colours:
       for s in Colours.listsall:
          label=label.replace(s, "")
       return (label)
+#End of class
+#**************************************************************************
+   
+# Test method.  No need for unit tests with this Class
+def doTest():
+   C = Colours()
+   if (C.clc==""):
+      print ("This OS does not support ANSI colour in terminals.")
+      print ("Test will execute, but output should be clean and colourless.")
+      print()
 
+   print()
+   print ("Foreground Colour Test: ", end='')
+   for c in C.listcall:
+      if not c==C.coff:
+         print (f"{c}W{C.coff}", end='', flush=True)
+   print()
+
+   print ("Background Colour Test: ", end='')
+   for b in C.listball:
+      if not b==C.boff:
+         print (f"{b}W{C.boff}", end='', flush=True)
+   print()
+
+   print()
+   print ("Macro format tests:")
+   for m in C.listmall:
+      if not m==C.off:
+         print (f"{m}Colours Module is colourful.{C.off}")
+   print()
+
+   print(f"Style test: (Note not all styles work on all terminals){C.clc}")
+   print(f"{C.sbo}This is BOLD.{C.sbof}")
+   print(f"{C.sdi}This is DIM.{C.sdif}")
+   print(f"{C.sun}This is UNDERLINE.{C.sunf}")
+   print(f"{C.sre}This is REVERSE.{C.sref}")
+   print(f"{C.sbl}This is BLINK.{C.sblf}")
+   print(f"{C.shi}This is HIDDEN.{C.shif}{C.off}")
+
+   print()
+   print("Colour grid:")
+   for i in range (17):
+      print(f"{i:^5}", end='')
+   print()
+   x=1
+   for c in C.listcall:
+      if not c==C.coff:
+         print (f"{x:^5}", end='')
+         x+=1
+      for b in C.listball:
+         if not c==C.coff and not b==C.boff:
+            print (f"{c}{b}  W  {C.off}", end='', flush=True)
+      print()
+   print()
+
+if (__name__=="__main__"):
+   doTest()
