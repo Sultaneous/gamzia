@@ -102,6 +102,8 @@ print("Without colour: "+Colours.cstrip(s))
 Note that to effectively use text colouring, you simply insert the text format string in the appropriate location in the string to enable it.
 One does not need to turn off the colour before applying a new colour; the previous colour/background/style remains in effect until overwritten or turned off.
 
+Also note that all format strings can be accessed statically, ie: Colours.clr, etc... and no instantiation of the Colours class is necessary.
+
 #### Methods
 
 | Method | Parameters | Summary |
@@ -186,4 +188,7 @@ python colours.py
 
 ...will execute the Colours unit test cases.
 
+##### Example of Foreground, Backgrouns Colour Combinations:
+
+![Colour Grid](http://www.gamzia.com/assets/images/other/colour_grid.png "Colour Grid")
 
