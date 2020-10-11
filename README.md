@@ -89,7 +89,8 @@ from colours import Colours as C
 Or, if using from gamzia folder, use:
 ``` python
 from gamzia.colours import Colours as C
-
+```
+``` python
 print(f"{C.clc}This is in light cyan.{C.off} This is back to normal.")
 print(f"{C.cly}{C.bdr}This is light yellow foreground on a dark red background.")
 
@@ -174,7 +175,7 @@ One does not need to turn off the colour before applying a new colour; the previ
 | yes | Foreground light green, background dark green |
 | old | Foreground light yellow, background dark blue |
 | retro | Foreground white, background black |
-| type | Foreground black, background white |
+| paper | Foreground black, background white |
 
 #### Misc
 
