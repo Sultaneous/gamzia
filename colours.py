@@ -171,11 +171,17 @@ class Colours:
       shif="\033[28m"      # Style Hidden Off
 
    # Lists of colour and backgrounds
+   cnames = ["cbl", "cdr", "cdg", "cdy", "cdb", "cdm", "cdc", "cdgy",
+             "clgy","clr", "clg", "cly", "clb", "clm", "clc", "cwh"]
+
+   bnames = ["bbl", "bdr", "bdg", "bdy", "bdb", "bdm", "bdc", "bdgy",
+             "blgy","blr", "blg", "bly", "blb", "blm", "blc", "bwh"]
+
    listcall = [f"{cbl}", f"{cdr}", f"{cdg}", f"{cdy}", f"{cdb}", f"{cdm}", f"{cdc}", f"{cdgy}",
-   f"{clr}", f"{clg}", f"{cly}", f"{clb}", f"{clm}", f"{clc}", f"{cwh}", f"{clgy}", f"{coff}"]
+   f"{clgy}", f"{clr}", f"{clg}", f"{cly}", f"{clb}", f"{clm}", f"{clc}", f"{cwh}", f"{coff}"]
 
    listball = [f"{bbl}", f"{bdr}", f"{bdg}", f"{bdy}", f"{bdb}", f"{bdm}", f"{bdc}", f"{bdgy}",
-   f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{blgy}", f"{boff}"]
+   f"{blgy}", f"{blr}", f"{blg}", f"{bly}", f"{blb}", f"{blm}", f"{blc}", f"{bwh}", f"{boff}"]
 
    listsall = [f"{sbo}", f"{sdi}", f"{sun}", f"{sbl}", f"{sre}", f"{shi}",
    f"{sbof}", f"{sdif}", f"{sunf}", f"{sblf}", f"{sref}", f"{shif}"]
@@ -198,6 +204,23 @@ class Colours:
 #End of class
 #**************************************************************************
 
+def makeColourGrid():
+   print(f"{Colours.sre}Colour grid:{Colours.sref}")
+   print("     ", end='')
+   for i in range (16):
+      print(f"{Colours.bnames[i]:^5}", end='')
+   print()
+   x=0
+   for c in Colours.listcall:
+      if not c==Colours.coff:
+         print (f"{Colours.cnames[x]:^5}", end='')
+         x+=1
+      for b in Colours.listball:
+         if not c==Colours.coff and not b==Colours.boff:
+            print (f"{c}{b}  W  {Colours.off}", end='', flush=True)
+      print()
+   print()
+
 # Test method.  No need for unit tests with this Class; just illustrate the 
 # colours.
 def doTest():
@@ -208,26 +231,26 @@ def doTest():
       print()
 
    print()
-   print ("Foreground Colour Test: ", end='')
+   print (f"{C.sre}Foreground Colour Test:{C.sref} ", end='')
    for c in C.listcall:
       if not c==C.coff:
          print (f"{c}W{C.coff}", end='', flush=True)
    print()
 
-   print ("Background Colour Test: ", end='')
+   print (f"{C.sre}Background Colour Test:{C.sref} ", end='')
    for b in C.listball:
       if not b==C.boff:
          print (f"{b}W{C.boff}", end='', flush=True)
    print()
 
    print()
-   print ("Macro format tests:")
+   print (f"{C.sre}Macro format tests:{C.sref}")
    for m in C.listmall:
       if not m==C.off:
          print (f"{m}Colours Module is colourful.{C.off}")
    print()
 
-   print(f"Style test: (Note not all styles work on all terminals){C.clc}")
+   print(f"{C.sre}Style test:{C.sref} (Note not all styles work on all terminals){C.clc}")
    print(f"{C.sbo}This is BOLD.{C.sbof}")
    print(f"{C.sdi}This is DIM.{C.sdif}")
    print(f"{C.sun}This is UNDERLINE.{C.sunf}")
@@ -236,20 +259,7 @@ def doTest():
    print(f"{C.shi}This is HIDDEN.{C.shif}{C.off}")
 
    print()
-   print("Colour grid:")
-   for i in range (17):
-      print(f"{i:^5}", end='')
-   print()
-   x=1
-   for c in C.listcall:
-      if not c==C.coff:
-         print (f"{x:^5}", end='')
-         x+=1
-      for b in C.listball:
-         if not c==C.coff and not b==C.boff:
-            print (f"{c}{b}  W  {C.off}", end='', flush=True)
-      print()
-   print()
+   makeColourGrid()
 
 if (__name__=="__main__"):
    doTest()
