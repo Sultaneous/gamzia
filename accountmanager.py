@@ -71,17 +71,18 @@ class AccountManager():
       except Exception as e:
          if (FLAG_DEBUG):
             print(f"Error::doesUserExist({user}): {e}")
-         reurn(False)
+         return(False)
       return(True)
 
    # Creates the accounts table.  Only used for new dbs.
+   # Sets username column to unique, case insensitive.
    def createAccountsTable(self):
       if not self.doesTableExist():
          # Table does not exist so create it
          try:
             with sql.connect(self.dbname) as c:
-               q="CREATE TABLE accounts (id INTEGER PRIMARY KEY, " \
-                  "user, password, created)"
+               q="CREATE TABLE accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                  "user TEXT UNIQUE COLLATE NOCASE, password, created)"
                c.execute(q)
                c.commit()
          except Exception as e:
@@ -217,7 +218,7 @@ def fail(err="Test failed."):
 
 def passed(msg="Test passed."):
    print (f"PASSED: {msg}\n")
-   
+
 # Unit test
 def UnitTestCreateSchema():
    print("TEST: Creating AccountManager object; creates DB and accounts table")
@@ -226,7 +227,7 @@ def UnitTestCreateSchema():
       passed("Schema created.")
       return True
    except Exception as err:
-      fail(err)   
+      fail(err)
       return (false)
 
 def UnitTestUserExists1():
@@ -269,7 +270,7 @@ def UnitTestUserExists2():
    except Exception as err:
       fail (err)
       return False
-      
+
 def UnitTestGetUser():
    print("TEST: Load user record. Loads id, user, password hash, creation date.")
    try:
