@@ -23,14 +23,14 @@ etc...
 | Module | Classes | Summary |
 | :------ | :------- | :------- |
 | [colours](#info_colours) | Colours | Contains ANSI colour codes for adding colour to text |
-| timer | Timer | A high performance timer, stopwatch style, for timing code execution and the like |
-| accountmanager | AccountManager | An SQLITE based user/password manager, using salted hashes, for authentication purposes. |
+| [timer](#info_timer) | Timer | A high performance timer, stopwatch style, for timing code execution and the like |
+| [accountmanager](#info_accountmanager) | AccountManager | An SQLITE based user/password manager, using salted hashes, for authentication purposes. |
 | datastructures | Stack, Queue, BinaryTree | Contains popular computer science data structures |
 | filedescriptor | FileDescriptor | Used by FBOMB protocol client/servers to get file metadata |
 
 ## API Documentation
 
-### Timer
+### <a id="info_timer">Timer</a>
 
 The timer module provides the Timer class, a simple to use high performance timer.
 
@@ -72,7 +72,7 @@ python timer.py
 
 ***
 
-### <a name="info_colours">Colours</a>
+### <a id="info_colours">Colours</a>
 
 Colours provides ansi colour codes for formatting text strings with colour adornments. 
 
@@ -194,3 +194,66 @@ python colours.py
 
 ![Colour Grid](http://www.gamzia.com/assets/images/other/colour_grid.png "Colour Grid")
 
+***
+
+### <a id="info_accountmanager">AccountManager</a>
+
+The AccountManager class is intended to provide a simple way to incorporate authentication into an app. For example, in a client-server paradigm,
+a login may be required prior to providing services.  Account management is a repetitive pattern that is covered with this class.
+
+The programmer can quickly incorporate a user database with salted hash passwords.  For security reasons, the actual or "plain-text" pasword is not
+stored. Instead, the SHA256 secure hash algorithm is used to create a hash, which is formed from the input of the user name (the salt) and the password.
+This hash is stored in the database, and for future comparisons, the salted hash is first recreated and then the hashes are compared.
+
+AccountManager uses an sqlite database, which is a local binary file.  Quesries employ the use of parameterization to harden it against SQL injection
+attacks.  The programmer provides the database name, hence a database can be isolated to a single app or shared among several apps.
+
+The **sqlite3 library** must be installed first to use this class:
+```bash
+pip install sqlite3
+```
+
+#### Usage examples:
+``` python
+from accountmanager import AccountManager
+```
+Or, if using from gamzia folder, use:
+``` python
+from gamzia.accountmanager import AccountManager
+```
+``` python
+# Create a schema / or open existing one
+mgr=AccountManager("users.db")
+
+# Add three test users
+mgr.addUser("Admin","Adminpassword")
+mgr.addUser("Guest","Anonymous")
+mgr.addUser("Test","debug")
+
+# Load all users
+print(mgr.listUsers())
+
+# Create a saltedhash to compare input with DB and verify password
+saltedhash = AccountManager.saltPassword("Guest","Anonymous")
+if (mgr.verifyPassword("Guest",saltedhash)):
+   print("Password verified")
+else:
+   print("Verification failed")
+
+# Change the password on account "Test", load before and after
+print(mgr.getUser("Test"))
+mgr.updatePassword("Test","newpassword")
+print(mgr.getUser("Test"))
+
+# Remove user "Test" from db
+mgr.deleteUser("Test")
+```
+
+#### Misc
+
+Running the following:
+``` bash
+python accountmanager.py
+```
+
+...will execute the AccountManager unit test cases.
