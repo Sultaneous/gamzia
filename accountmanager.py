@@ -259,6 +259,21 @@ def UnitTestAddUser():
       fail(err)
       return False
 
+def UnitTestAddDuplicateUser():
+   print("TEST: Adding a duplicate user.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=False
+      mgr.addUser("Dupe", "dupe")
+      # Test adding same user name with different case
+      actual=mgr.addUser("dupe", "dupe")
+      assert expected==actual
+      passed("Duplicate detected, addUser aborted.")
+      return True
+   except Exception as err:
+      fail(err)
+      return False
+
 def UnitTestUserExists2():
    print("TEST: Does User Karim Exist now?  Should be True.")
    try:
@@ -382,6 +397,7 @@ def doTests():
    unittests.append(UnitTestCreateSchema)
    unittests.append(UnitTestUserExists1)
    unittests.append(UnitTestAddUser)
+   unittests.append(UnitTestAddDuplicateUser)
    unittests.append(UnitTestUserExists2)
    unittests.append(UnitTestGetUser)
    unittests.append(UnitTestGetPassword)
