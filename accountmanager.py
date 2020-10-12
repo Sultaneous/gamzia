@@ -6,6 +6,8 @@
 # Uses username as the salt value (SALT is not secret).
 
 # KSU 201011 Formalized unit tests.
+# KSU 201012 Fixed case insensitive user name conflict issue by altering
+#            schema to "...user TEXT UNIQUE COLLATE NOCASE ..."
 
 # When creating an instance of the AccountManager class,
 # provide the dbname parameter (or it will use the default name):
