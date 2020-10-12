@@ -22,7 +22,7 @@ etc...
 
 | Module | Classes | Summary |
 | :------ | :------- | :------- |
-| colours | Colours | Contains ANSI colour codes for adding colour to text |
+| [colours](#info_colours) | Colours | Contains ANSI colour codes for adding colour to text |
 | timer | Timer | A high performance timer, stopwatch style, for timing code execution and the like |
 | accountmanager | AccountManager | An SQLITE based user/password manager, using salted hashes, for authentication purposes. |
 | datastructures | Stack, Queue, BinaryTree | Contains popular computer science data structures |
@@ -72,7 +72,7 @@ python timer.py
 
 ***
 
-### Colours
+### <a name="info_colours">Colours</a>
 
 Colours provides ansi colour codes for formatting text strings with colour adornments. 
 
