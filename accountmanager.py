@@ -3,10 +3,13 @@
 # Account Manager, Karim Sultan September 2020.
 # CRUD for accounts and passwords in an sqlite DB.
 # Passwords are salted and stored hashed in SHA256.
-# USes username as the salt value (SALT is not secret).
+# Uses username as the salt value (SALT is not secret).
+
+# KSU 201011 Formalized unit tests.
 
 # When creating an instance of the AccountManager class,
 # provide the dbname parameter (or it will use the default name):
+# "accounts.db"
 # NOTE: This will create db and schema if required.
 # mgr = AccountManager("mydb.db")
 #
@@ -31,8 +34,8 @@ import sqlite3 as sql
 import os
 
 FLAG_DEBUG=False
-DEF_TABLE="accounts"
-DEF_DBNAME="accounts.db"
+DEF_DBNAME="accounts.db"          # Default database filename
+DEF_TESTDB="unit_tests.db"        # Default unit test database filename
 
 class AccountManager():
    def __init__(self, dbname=DEF_DBNAME):
@@ -205,59 +208,207 @@ class AccountManager():
       h=hashlib.sha256(b).hexdigest().lower()
       return(h)
 
+#End of class
 #**************************************************************************
 
-def main():
-   # Some test routines
+# Unit test helper methods
+def fail(err="Test failed."):
+   print (f"FAILED: {err}\n")
+
+def passed(msg="Test passed."):
+   print (f"PASSED: {msg}\n")
+   
+# Unit test
+def UnitTestCreateSchema():
    print("TEST: Creating AccountManager object; creates DB and accounts table")
-   mgr=AccountManager("amgrtest.db")
-   print("   If no exception, SUCCESS.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      passed("Schema created.")
+      return True
+   except Exception as err:
+      fail(err)   
+      return (false)
 
-   print()
+def UnitTestUserExists1():
    print("TEST: Does User Exist already?  Should be False.")
-   print("   User Karim Exists?",mgr.doesUserExist("Karim"))
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=False
+      actual=mgr.doesUserExist("Karim")
+      print("   User Karim Exists?", actual)
+      assert expected==actual
+      passed("User does not exist.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
-   print()
-   print("TEST: Adding a user (+password).  Should be True, True.")
-   print("   addUser(Karim, test) Karim worked? ",mgr.addUser("Karim", "test"))
-   print("   doesUserExist(Karim)",mgr.doesUserExist("Karim"))
+def UnitTestAddUser():
+   print("TEST: Adding a user (+password).")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=True
+      actual=mgr.addUser("Karim", "test")
+      assert expected==actual
+      passed("User Karim added.")
+      return True
+   except Exception as err:
+      fail(err)
+      return False
 
-   print()
-   print("TEST: Load user record. Should have id, user, password hash, date.")
-   print("   getUser(Karim): ")
-   results=mgr.getUser("Karim")
-   for s in results:
-      print(f"      Value: {s}")
+def UnitTestUserExists2():
+   print("TEST: Does User Karim Exist now?  Should be True.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=True
+      actual=mgr.doesUserExist("Karim")
+      print("   User Karim Exists?", actual)
+      assert expected==actual
+      passed("User exists.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
+      
+def UnitTestGetUser():
+   print("TEST: Load user record. Loads id, user, password hash, creation date.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      print("   getUser(Karim): ")
+      results=mgr.getUser("Karim")
+      assert results!=None
+      for s in results:
+         print(f"      Value: {s}")
+      passed("Record loaded.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
-   print()
+def UnitTestGetPassword():
    print("TEST: Get Password for user. Should be password hash.")
-   print("   getPassword (Karim):",mgr.getPassword("Karim"))
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      actual=mgr.getPassword("Karim")
+      assert actual!=None
+      print("   getPassword (Karim):",actual)
+      passed("Loaded password hash.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
-   print()
-   print("TEST: Verify Password. Should be False, True.")
-   print("   verifyPassword(Karim,test):",mgr.verifyPassword("Karim","test"))
-   print("   verifypassword(Karim,salted hash of test):",
-         mgr.verifyPassword("Karim",AccountManager.saltPassword("Karim","test")))
+def UnitTestVerifyBadPassword():
+   print("TEST: Verify BAD Password.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=False
+      actual=mgr.verifyPassword("Karim","test")
+      print("   verifyPassword(Karim,test):",actual)
+      assert expected==actual
+      passed("Bad password rejected.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
-   print()
-   print("TEST: Update password. Should be True, hash.")
-   print("   updatePassword(Karim, newpasswd): ",mgr.updatePassword("Karim", "newpwd"))
-   print("   getPassword(Karim):",mgr.getPassword("Karim"))
+def UnitTestVerifyGoodPassword():
+   print("TEST: Verify GOOD Password (salted hash of password).")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=True
+      actual=mgr.verifyPassword("Karim",
+             AccountManager.saltPassword("Karim","test"))
+      print("   verifypassword(Karim,salted hash of test):",actual)
+      assert expected==actual
+      passed("Good password accepted.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
-   print()
-   print("TEST: List users.  Should be a list with at least 1 record.")
-   print("   listUsers():", mgr.listUsers())
+def UnitTestUpdatePassword():
+   print("TEST: Update password.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=True
+      actual=mgr.updatePassword("Karim", "newpwd")
+      print("   updatePassword(Karim, newpasswd):",actual)
+      assert expected==actual
+      passed("Password updated.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
 
+def UnitTestListUsers():
+   print("TEST: List users.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      mgr.addUser("Admin","Admin")
+      mgr.addUser("Bob","Slob")
+      mgr.addUser("Deimos","Phobos")
+      results=mgr.listUsers()
+      assert results!=None
+      print(results)
+      passed("Listed at least one user.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
+
+def UnitTestDeleteUser():
+   print("TEST: Delete user.")
+   try:
+      mgr=AccountManager(DEF_TESTDB)
+      expected=True
+      actual=mgr.deleteUser("Karim")
+      print("   deleteUser(Karim):",actual)
+      assert expected==actual
+      passed("User deleted.")
+      return True
+   except Exception as err:
+      fail (err)
+      return False
+
+   
+def doTests():
+   # Register unit tests. Order is important.
+   passed=0
+   unittests=[]
+   unittests.append(UnitTestCreateSchema)
+   unittests.append(UnitTestUserExists1)
+   unittests.append(UnitTestAddUser)
+   unittests.append(UnitTestUserExists2)
+   unittests.append(UnitTestGetUser)
+   unittests.append(UnitTestGetPassword)
+   unittests.append(UnitTestVerifyBadPassword)
+   unittests.append(UnitTestVerifyGoodPassword)
+   unittests.append(UnitTestUpdatePassword)
+   unittests.append(UnitTestListUsers)
+   unittests.append(UnitTestDeleteUser)
+
+   # Execute unit tests
+   for test in unittests:
+      if (test()):
+         passed+=1
+
+   # Report
    print()
-   print("TEST: Delete user.  Should be True, False.")
-   print("   deleteUser(Karim):",mgr.deleteUser("Karim"))
-   print("   doesUserExist(Karim)",mgr.doesUserExist("Karim"))
+   print (f"Results: passed {passed} / {len(unittests)} unit tests.")
+   print ("Testing complete.")
+
+   # Clean up
+   if os.path.exists(DEF_TESTDB):
+      os.remove (DEF_TESTDB)
 
    print()
    print("DONE.")
-         
+   print()
 
-if __name__=="__main__":
-   main()
+#**************************************************************************
+
+if (__name__=="__main__"):
+   doTests()
    
 
