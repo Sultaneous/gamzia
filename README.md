@@ -334,27 +334,27 @@ stack.push("Jupiter")
 stack.push("Saturn")
 
 # Display current stack
-print (stack.toString())
+print ("Stack:",stack.toString())
 
 # Get the size
-x = stack.size()
+print("Size:",stack.size()
 
 # Peek at the top and bottom items
-print(stack.peek())
-print(stack.botom())
+print("Top:",stack.peek())
+print("Bottom",stack.bottom())
 
 # Remove a couple of elements
 s = stack.pop()
 s = stack.pop()
 
-print(stack.peek())
-print(stack.bottom())
-print(stack.size())
-print(stack.toString())
+print("Top:",stack.peek())
+print("Bottom:",stack.bottom())
+print("Size:",stack.size())
+print("Stack:",stack.toString())
 
 # Clear it
 stack.clear()
-print(stack.size())
+print("Size after clear:",stack.size())
 
 ```
 
