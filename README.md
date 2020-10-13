@@ -25,7 +25,7 @@ etc...
 | [colours](#info_colours) | Colours | Contains ANSI colour codes for adding colour to text |
 | [timer](#info_timer) | Timer | A high performance timer, stopwatch style, for timing code execution and the like |
 | [accountmanager](#info_accountmanager) | AccountManager | An SQLITE based user/password manager, using salted hashes, for authentication purposes. |
-| datastructures | Stack, Queue, BinaryTree | Contains popular computer science data structures |
+| [datastructures](#info_datastructures) | Stack, Queue, BinaryTree | Contains popular computer science data structures |
 | filedescriptor | FileDescriptor | Used by FBOMB protocol client/servers to get file metadata |
 
 ## API Documentation
@@ -53,13 +53,14 @@ print (f"Time taken: {my_timer.elapsed():.4f}")
 ```
 
 #### Methods
-| Method | Parameters | Summary |
-|:-----|:--------|:-------|
-| Timer() | None | Constructor |
-| start() | None | Starts the timer |
-| stop() | None | Stops the timer |
-| peek() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. |
-| elapsed() | None | Returns the final elapsed time in seconds.  Assumes timer is stopped.  Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+| Method | Parameters | Returns | Summary |
+|:-----|:--------|:-------|:-------|
+| Timer() | None | Class instance | Constructor |
+| start() | None | nothing | Starts the timer |
+| stop() | None | nothing | Stops the timer |
+| peek() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time |
+| elapsed() | None | Returns the final elapsed time in seconds. 
+| Assumes timer is stopped.  Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
 
 #### Misc
 
@@ -80,11 +81,11 @@ Colours provides ansi colour codes for formatting text strings with colour adorn
 
 Colours are identified with a 3-4 letter foreground code (cxx), background code (bxx), or style code (sxx).  Colours can be turned off (reverting to terminal default) with "coff" (Colour OFF), "boff" (Background OFF), the generic "off" (foreground & background off). Styles need to be turned off individually.
 
-NOTE: ANSI colouring supports 16 colours as listed below:
+**NOTE:** ANSI colouring supports **16 colours** as listed below:
 
 ![Colour List](http://www.gamzia.com/assets/images/other/colour_list.png "Colour Grid")
 
-NOTE: You can have 1 active foreground colour, 1 active background colour, and multiple active styles (for example, bold and underline).
+**NOTE:** You can have 1 active foreground colour, 1 active background colour, and multiple active styles (for example, bold and underline).
 
 #### Usage examples:
 ``` python
@@ -106,7 +107,7 @@ print("Without colour: "+Colours.cstrip(s))
 Note that to effectively use text colouring, you simply insert the text format string in the appropriate location in the string to enable it.
 One does not need to turn off the colour before applying a new colour; the previous colour/background/style remains in effect until overwritten or turned off.
 
-Also note that all format strings can be accessed statically, ie: Colours.clr, etc... and no instantiation of the Colours class is necessary.
+**Note:** All format strings can be accessed statically, ie: Colours.clr, etc... and no instantiation of the Colours class is necessary.
 
 #### Methods
 
@@ -277,3 +278,52 @@ python accountmanager.py
 ```
 
 ...will execute the AccountManager unit test cases.
+
+***
+
+### <a id="info_datastructures">Data Structures</a>
+
+The Data Structure module contains mulitple classes representing basic computer science data structures. You can easily add a stack to your programs, for example, using this module. Please see the usage examples below along with the method reference for more details.  Examples of using these data structures can be found in the module's unit tests.
+
+Currently supported data structures include **Stack (LIFO), Queue (FIFO), and BinaryTree**.  More structures, such as AVL Trees and Priority Queues (Heaps) are intended.
+
+#### Usage examples:
+``` python
+from datastructures import Stack, Queue, BinaryTree, TRAVERSALS
+```
+Or, to include all classes and enums:
+``` python
+from datastructure import *
+```
+Or, if using the gamzia package:
+``` python
+from gamzia.datastructures import *
+```
+``` python
+my_timer=Timer()
+my_timer.start()
+# ... do logic here...
+my_timer.stop()
+
+# Report seconds used to 4 decimal places
+print (f"Time taken: {my_timer.elapsed():.4f}")
+```
+---
+### Stack
+#### Methods
+| Method | Parameters | Returns | Summary |
+|:-----|:--------|:-------|:-------|
+| Stack() | None | | |
+| clear() | None | | |
+| push() | None |  | |
+| pop() | None |  | |
+| peek() | None | | |
+
+#### Misc
+
+Running the following:
+``` bash
+python datastructures.py
+```
+
+...will execute the datastructure unit test cases, which test all the data structures in the module.
