@@ -31,7 +31,6 @@ class TRAVERSALS(Enum):
 # Classic LIFO structure
 class Stack:
    def __init__(self):
-      # TODO: Add public attributes here. Private attributes start with '_'.
       self._stack=[]
       self.isdebug=False
 
@@ -49,12 +48,13 @@ class Stack:
       self.first=self.bottom
       self.reset=self.clear
       self.delete=self.clear
+      self.length=self.size
 
    # Empties stack.
    def clear(self):
       del(self._stack)
       self._stack=[]
-      
+
    # Places item on top of stack.
    def push(self, obj):
       self._stack.append(obj)
@@ -237,7 +237,7 @@ class BinaryTree:
       # Recurse left side of tree
       self.__traverseReverse(node.rightChild, bucket)
       # Done left, take self as temp root
-      bucket.append(node.key)      
+      bucket.append(node.key)
       # Append right side
       self.__traverseReverse(node.leftChild, bucket)
 
@@ -263,7 +263,7 @@ class BinaryTree:
       self.__traversePostOrder(node.rightChild, bucket)
       # Now use current node
       bucket.append(node.key)
-      
+
    # Traverses the tree by requested order.  Returns a list of
    # all values, in order defined by the TRAVERSALS enumeration.
    def traverse(self, traversalOrder):
@@ -398,12 +398,15 @@ class BinaryTree:
 
       # Done
       return ((leftHeight, rightHeight))
-      
+
 
    # Balances the tree.  Does this by doing an inorder (sorted)
    # traversal, then retrieving each node from the middle outwards,
    # and building a new tree.  Balancing is memory intensive.
    def balance(self):
+      # TODO: NOT IMPLEMENTED
+      return(None)
+
       # Get keys
       keys=self.traverse(TRAVERSAL.TRAVERSE_INORDER)
       # Get their node data
@@ -416,7 +419,6 @@ class BinaryTree:
       bst=BinaryTree()
       for i in range(1, steps):
          bst.insert(keys[mid-i], nodes[keys[mid-i]])
-      
 
    # Deletes a node from the BST based on key.
    # Automatically rebalances tree.
@@ -443,7 +445,7 @@ class BinaryTree:
 #*************************************************************************
 def printBanner():
       print(f"{'*'*75}")
-      
+
 def testStack():
    printBanner()
    print("Class Stack: Method Tests")
@@ -469,7 +471,7 @@ def testStack():
    print (f"\nPopping all items off stack.")
    while stack.size()>0:
       print(f"   Got: {stack.pop()}")
-      
+
    print (f"Stack size is {stack.size()}")
 
    # Test peek at empty
@@ -505,7 +507,7 @@ def testQueue():
 
    # Test toString()
    print(f"Front to Back view:\n{queue.toString()}")
-   
+
    # Test first, last, size
    print (f"Front of queue: {queue.first()}")
    print (f"End of queue: {queue.last()}")
@@ -515,7 +517,7 @@ def testQueue():
    print (f"\Dequeueing all items off stack.")
    while queue.size()>0:
       print(f"   Got: {queue.dequeue()}")
-      
+
    print (f"Queue size is {queue.size()}")
 
    # Test peek at empty
@@ -577,14 +579,14 @@ def testBinaryTree():
    print(f"The tree traversed in post-order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_POSTORDER)}")
 
    print("Done testing BinaryTree!")
-   
+
 def main():
    testStack()
    testQueue()
    testBinaryTree()
    printBanner()
    print("DONE.")
-   
-if __name__=="__main__":
+
+if (__name__=="__main__"):
    main()
 
