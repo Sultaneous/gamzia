@@ -316,7 +316,7 @@ Stacks work like piles; you "push" an element onto the stack and it goes on the 
 | peek() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
 | bottom() | first() | None | The last element of the stack, or None if stack is empty | Non-destructive. It's like peek for the bottom, or first, element. |
 | size() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| toString() | None | **optional** topdown=True|False | A string representaion of the stack, when possible. | Converts all elements to sting and list them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering. |
+| toString() | None | **optional** topdown=True,False | A string representaion of the stack, when possible. | Converts all elements to sting and list them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering. |
 
 #### Misc
 
