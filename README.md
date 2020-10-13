@@ -80,7 +80,9 @@ Colours provides ansi colour codes for formatting text strings with colour adorn
 
 Colours are identified with a 3-4 letter foreground code (cxx), background code (bxx), or style code (sxx).  Colours can be turned off (reverting to terminal default) with "coff" (Colour OFF), "boff" (Background OFF), the generic "off" (foreground & background off). Styles need to be turned off individually.
 
-NOTE: ANSI colouring supports 16 colours as listed below.
+NOTE: ANSI colouring supports 16 colours as listed below:
+
+![Colour List](http://www.gamzia.com/assets/images/other/colour_list.png "Colour Grid")
 
 NOTE: You can have 1 active foreground colour, 1 active background colour, and multiple active styles (for example, bold and underline).
 
