@@ -337,7 +337,7 @@ stack.push("Saturn")
 print ("Stack:",stack.toString())
 
 # Get the size
-print("Size:",stack.size()
+print("Size:",stack.size())
 
 # Peek at the top and bottom items
 print("Top:",stack.peek())
