@@ -304,7 +304,7 @@ Further usage examples are provided per class below.
 ---
 ### Stack
 
-Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).
+Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by entry, and unsorted.
 
 #### Methods
 | Method | Alias(es) |Parameters | Returns | Summary |
@@ -316,7 +316,47 @@ Stacks work like piles; you "push" an element onto the stack and it goes on the 
 | peek() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
 | bottom() | first() | None | The last element of the stack, or None if stack is empty | Non-destructive. It's like peek for the bottom, or first, element. |
 | size() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| toString() | None | **optional** topdown=True,False | A string representaion of the stack, when possible. | Converts all elements to sting and list them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering. |
+| toString() | None | **optional** topdown=True,False | A string representation of the stack, when possible. | Converts all elements to sting and list them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; the default is True (print from the top to the bottom). |
+
+#### Examples
+
+Example of creating a stack, pushing 4 elements onto it, and then popping them off.
+``` python
+from gamzia.datastructures import Stack
+
+# Create empty stack
+stack=Stack()
+
+# Add four items
+stack.push("Earth")
+stack.push("Mars")
+stack.push("Jupiter")
+stack.push("Saturn")
+
+# Display current stack
+print (stack.toString())
+
+# Get the size
+x = stack.size()
+
+# Peek at the top and bottom items
+print(stack.peek())
+print(stack.botom())
+
+# Remove a couple of elements
+s = stack.pop()
+s = stack.pop()
+
+print(stack.peek())
+print(stack.bottom())
+print(stack.size())
+print(stack.toString())
+
+# Clear it
+stack.clear()
+print(stack.size())
+
+```
 
 #### Misc
 
