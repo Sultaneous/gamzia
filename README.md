@@ -505,52 +505,44 @@ from gamzia.datastructures import BinaryTree, TreeNode, TRAVERSALS
 bst=BinaryTree()
 
 # Add four items, string keys with string data
-tnode=TreeNode()
-tnode.key="Earth"
-tnode.data="3rd Rock from the Sun"
-bst.insert("Earth")
+tnode=TreeNode("Earth", "3rd Rock from the Sun")
+bst.insert(tnode)
 
-tnode=TreeNode()
-tnode.key="Mars"
-tnode.data="Red dusty desert."
-bst.insert("Earth")
+tnode=TreeNode("Mars", "Red dusty desert.")
+bst.insert(tnode)
 
-tnode=TreeNode()
-tnode.key="Jupiter"
-tnode.data="Fat planet with killer storms."
-bst.insert("Earth")
+tnode=TreeNode("Jupiter", "Fat planet with killer storms.")
+bst.insert(tnode)
 
-tnode=TreeNode()
-tnode.key="Saturn"
-tnode.data="If you like it, put a ring on it"
-bst.insert("Earth")
+tnode=TreeNode("Saturn", "If you like it, put a ring on it")
+bst.insert(tnode)
 
 # Display current bst tree, sorted ascending
-print ("Binary Tree:",stack.toString())
+print ("Binary Tree:",bst.toString())
 
 # Get the size
-print("Size:",stack.size())
+print("Size:",bst.size())
 
-# Get the data for Earth
+# Get the data for Earth and Saturn
 tnode=bst.find("Earth")
 print(f"Key: {tnode.key}  |  Data: {tnode.data}")
 
+tnode=bst.find("Saturn")
+print(f"Key: {tnode.key}  |  Data: {tnode.data}")
+
 # Update Earth data, display
-tnode=TreeNode()
-tnode.key="Earth"
-tnode.data="This is new data for Earth, demonstrating an update operation.")
+tnode=TreeNode("Earth", "This is new data for Earth, demonstrating an update operation.")
 bst.insert(tnode)
 tnode=bst.find("Earth")
 print(f"Key: {tnode.key}  |  Data: {tnode.data}")
 
 # Show min and max values:
 print("Min:",bst.min())
-print("Size:",bst.max())
+print("Max:",bst.max())
 
 # Clear it
 bst=BinaryTree()
 print("Size after clear:",bst.size())
-
 ```
 
 #### Misc
