@@ -497,7 +497,7 @@ The Key-Data combination is a dictionary pattern, same as a key-value pair.
 
 #### Examples
 
-Example of creating a stack, pushing 4 elements onto it, and then popping them off.
+Example of creating a binary tree, isnerting 4 nodes (keys with data) into it, finding and updating them.
 ``` python
 from gamzia.datastructures import BinaryTree, TreeNode, TRAVERSALS
 
@@ -519,6 +519,9 @@ bst.insert(tnode)
 
 # Display current bst tree, sorted ascending
 print ("Binary Tree:",bst.toString())
+
+# Display current bst tree, sorted descending
+print ("Binary Tree:",bst.toString(traversal=TRAVERSALS.TRAVERSAL_REVERSE))
 
 # Get the size
 print("Size:",bst.size())
