@@ -304,7 +304,7 @@ Further usage examples are provided per class below.
 ---
 ### Stack
 
-Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by entry, and unsorted.
+Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by the order of element entry, and unsorted.
 
 #### Methods
 | Method | Alias(es) |Parameters | Returns | Summary |
@@ -316,7 +316,7 @@ Stacks work like piles; you "push" an element onto the stack and it goes on the 
 | peek() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
 | bottom() | first() | None | The last element of the stack, or None if stack is empty | Non-destructive. It's like peek for the bottom, or first, element. |
 | size() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| toString() | None | **optional** topdown=True,False | A string representation of the stack, when possible. | Converts all elements to sting and list them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; the default is True (print from the top to the bottom). |
+| toString() | None | **optional** topdown=True,False | A string representation of the stack, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; the default is True (print from the top to the bottom). |
 
 #### Examples
 
@@ -366,3 +366,71 @@ python datastructures.py
 ```
 
 ...will execute the datastructure unit test cases, which test all the data structures in the module.
+
+### Queue
+
+Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" and element, which removes the first element in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the front of the queue, or the "last" element  of the queue, which in both cases returns the element at that location wihout removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and unsorted.
+
+Whereas Stacks have a top to bottom type (up/down) organization, a queue has a front to back (left/right) orientation.
+
+#### Methods
+| Method | Alias(es) |Parameters | Returns | Summary |
+|:-----|:--------|:--------|:-------|:-------|
+| Queue() | None | None | Class instance | Creates an empty queue structure. |
+| clear() | reset(), delete() | None | nothing | Removes all elements from the queue, resetting it. |
+| enqueue() | push(), add(), append() | Object | nothing | nothing | Places an object element at the end (last) of the queue. |
+| dequeue() | pop(), take(), get() | None | The first element of the queue, or None if queue is empty | Removes and returns the front (first) queue element if there is one. |
+| first() | peek(), front() | None | The first element of the queue, or None if queue is empty | Returns the front queue element, without removing it, if there is one. |
+| last() | back() | None | The last element of the queue, or None if queue is empty | Non-destructive. It peeks at the end of the line. |
+| size() | length() | None | The integer count of elements in the queue | Determines the size of the queue in elements. |
+| toString() | None | None | A string representation of the queue, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects.  Orientation is front to back. |
+
+#### Examples
+
+Example of creating a queue, enqueueing 4 elements into it, and then dequeueing them.
+``` python
+from gamzia.datastructures import Queue
+
+# Create empty stack
+queue=Queue()
+
+# Add four items
+queue.enqueue("Earth")
+queue.enqueue("Mars")
+queue.enqueue("Jupiter")
+queue.enqueue("Saturn")
+
+# Display current stack
+print ("Queue:",queue.toString())
+
+# Get the size
+print("Size:",queue.size())
+
+# Peek at the first and last items
+print("Top:",queue.first())
+print("Bottom",queue.last())
+
+# Remove a couple of elements
+s = queue.dequeue()
+s = queue.dequeue()
+
+print("Top:",queue.first())
+print("Bottom:",queue.last())
+print("Size:",queue.size())
+print("Stack:",queue.toString())
+
+# Clear it
+queue.clear()
+print("Size after clear:",queue.size())
+
+```
+
+#### Misc
+
+Running the following:
+``` bash
+python datastructures.py
+```
+
+...will execute the datastructure unit test cases, which test all the data structures in the module.
+
