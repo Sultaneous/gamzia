@@ -448,10 +448,10 @@ BinaryTrees can be traversed in four manners: inorder (sorted), reverse inorder 
 
 ``` python
 class TRAVERSALS(Enum):
-   TRAVERSAL_INORDER   = 1
-   TRAVERSAL_REVERSE   = 2
-   TRAVERSAL_PREORDER  = 3
-   TRAVERSAL_POSTORDER = 4
+   INORDER   = 1
+   REVERSE   = 2
+   PREORDER  = 3
+   POSTORDER = 4
 ```
 
 #### Methods
@@ -471,11 +471,11 @@ The Key-Data combination is a dictionary pattern, same as a key-value pair.
 | insertKey() | None | string or integer Key | nothing | Like insert(), but only inserts a key, without associated data. |
 | exists() | doesexist() | string or integer Key | True if key is in binary tree, False otherwise | Searches nodes to see if one with the specified key exists |
 | search() | find(), retrieve(), get() | string or integer Key | Returns the tree node with the associated key, or None if not found | Non-destructive. |
-| traverse() | None | **optional** traversal=TRAVERSALS.TRAVERSAL_INORDER | A list of binary tree node keys in the order requested. | The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.TRAVERSAL_INORDER** (prints sorted, ascending). |
+| traverse() | None | **optional** traversal=TRAVERSALS.INORDER | A list of binary tree node keys in the order requested. | The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.INORDER** (prints sorted, ascending). |
 | min() | None | None | The lowest key value in the tree. | The min value is tracked during an insert, so this call is heavily optimized. |
 | max() | None | None | The highest key value in the tree. | The max value is tracked during an insert, so this call is heavily optimized. |
 | size() | length() | None | The integer number of nodes in the binary tree. | This method is fully optimized for speed; counting is done on insert operations. |
-| toString() | None | **optional** traversal=TRAVERSALS.TRAVERSAL_INORDER | A string representation of the binary trees keys. | Converts all node keys to string and lists them.  The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.TRAVERSAL_INORDER** (prints sorted, ascending). |
+| toString() | None | **optional** traversal=TRAVERSALS.INORDER | A string representation of the binary trees keys. | Converts all node keys to string and lists them.  The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.INORDER** (prints sorted, ascending). |
 
 ##### Not Implemented:
   * delete()  
@@ -517,11 +517,11 @@ bst.insert(tnode)
 tnode=TreeNode("Saturn", "If you like it, put a ring on it")
 bst.insert(tnode)
 
-# Display current bst tree, sorted ascending
+# Display current bst tree, sorted ascending (TRAVERSALS.INORDER is the default)
 print ("Binary Tree:",bst.toString())
 
 # Display current bst tree, sorted descending
-print ("Binary Tree:",bst.toString(traversal=TRAVERSALS.TRAVERSAL_REVERSE))
+print ("Binary Tree:",bst.toString(traversal=TRAVERSALS.REVERSE))
 
 # Get the size
 print("Size:",bst.size())
