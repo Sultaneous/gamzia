@@ -26,7 +26,7 @@ etc...
 | [timer](#info_timer) | Timer | A high performance timer, stopwatch style, for timing code execution and the like |
 | [accountmanager](#info_accountmanager) | AccountManager | An SQLITE based user/password manager, using salted hashes, for authentication purposes. |
 | [datastructures](#info_datastructures) | Stack, Queue, BinaryTree | Contains popular computer science data structures |
-| filedescriptor | FileDescriptor | Used by FBOMB protocol client/servers to get file metadata |
+| [filedescriptor](#info_filedescriptor) | FileDescriptor | Used by FBOMB protocol client/servers to get file metadata |
 
 ## API Documentation
 
@@ -285,7 +285,7 @@ python accountmanager.py
 
 The Data Structure module contains mulitple classes representing basic computer science data structures. You can easily add a stack to your programs, for example, using this module. Please see the usage examples below along with the method reference for more details.  Examples of using these data structures can be found in the module's unit tests.
 
-Currently supported data structures include **Stack (LIFO), Queue (FIFO), and BinaryTree**.  More structures, such as AVL Trees and Priority Queues (Heaps) are intended.
+Currently supported data structures include **[Stack](#info_stack) (LIFO), [Queue](#info_queue) (FIFO), and [BinaryTree](#info_binarytree)**.  More structures, such as AVL Trees and Priority Queues (Heaps) are intended.
 
 #### Usage examples:
 ``` python
@@ -302,7 +302,7 @@ from gamzia.datastructures import *
 Further usage examples are provided per class below.
 
 ---
-### Stack
+### <a id="info_stack">Stack</a>
 
 Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by the order of element entry, and unsorted.
 
@@ -316,7 +316,7 @@ Stacks work like piles; you "push" an element onto the stack and it goes on the 
 | peek() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
 | bottom() | first() | None | The last element of the stack, or None if stack is empty | Non-destructive. It's like peek for the bottom, or first, element. |
 | size() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| toString() | None | **optional** topdown=True,False | A string representation of the stack, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; the default is True (print from the top to the bottom). |
+| toString() | None | **optional** topdown=True | A string representation of the stack, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; it is a boolean with the default being True (print from the top to the bottom). |
 
 #### Examples
 
@@ -367,7 +367,7 @@ python datastructures.py
 
 ...will execute the datastructure unit test cases, which test all the data structures in the module.
 
-### Queue
+### <a id="info_queue">Queue</a>
 
 Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" and element, which removes the first element in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the front of the queue, or the "last" element  of the queue, which in both cases returns the element at that location wihout removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and unsorted.
 
@@ -433,4 +433,98 @@ python datastructures.py
 ```
 
 ...will execute the datastructure unit test cases, which test all the data structures in the module.
+
+### <a id="info_binarytree">BinaryTree</a>
+
+BinaryTrees are a special form of tree structure, where each node can have a maximum of two children.  It uses an ordered insertion, and as such is an ordered, sorted tree. Because of this, insertion in the worse case scenario can take **O(n)** processing time, but retrieval is guaranteed to taken no more than **O(log n)** processing time, thus is extremely fast.  In fact, a binary search is the fastest search algorithm in computer science.
+
+The reason BinaryTrees can take so long to insert is that they can become "unbalanced".  A special type of binary tree, called an AVL tree, automatically rebalances the tree when necessary.  
+
+BinaryTrees contain data in TreeNode structures. TreeNodes consist of a key and a value.  The key is usually an integer ordinal, or a string label, while the value can be any data, including other complex objects (for example, you could have a tree of queues, which is known as a B-Tree).  To use the BinaryTree, one first creates a TreeNode, populates it, and then inserts it into the tree.  Usage examples are provided below.
+
+BinaryTrees can be traversed in four manners: inorder (sorted), reverse inorder (descending sorted), preorder (left biased) and postorder (right biased). An enumeration called **TRAVERSALS** is provided containing reference names for the traversal method used with the toString() method.
+
+#### Enumeration: Traversals
+
+class TRAVERSALS(Enum):
+   TRAVERSAL_INORDER   = 1
+   TRAVERSAL_REVERSE   = 2
+   TRAVERSAL_PREORDER  = 3
+   TRAVERSAL_POSTORDER = 4
+   
+#### Methods
+
+##### TreeNode Class
+| Method | Parameters | Returns | Summary |
+|:-----|:--------|:-------|:-------|
+| TreeNode() | integer or string key, **optional** object data | Class instance | Inherits from Node; contains BinaryTree specific node values. |
+| copy() | None | A deep copy of TreeNode object | Performs a deep copy, creating a new identical instance. |
+
+##### BinaryTree Class
+| Method | Alias(es) |Parameters | Returns | Summary |
+|:-----|:--------|:--------|:-------|:-------|
+| BinaryTree() | None | None | Class instance | Creates an empty stack structure. |
+| insert() | put(), set(), push_back() | Object | nothing | nothing | Places an object element on the top of the stack. |
+| insertKey() | take(), get(), pop_back() | None | The top element of the stack, or None if stack is empty | Removes and returns the top stack element if there is one. |
+| exists() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
+| search() | find(), retrieve(), get() | Key | Returns the tree node with the associated key, or None if not found | Non-destructive. |
+| traverse() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
+| getHeight() | | | |
+| min() | None | None | The lowest key value in the tree. | The min value is tracked during an insert, so this call is heavily optimized. |
+| max() | None | None | The highest key value in the tree. | The max value is tracked during an insert, so this call is heavily optimized. |
+| size() | None | None | The integer number of nodes in the binary tree. | This method is fully optimized for speed; counting is done on insert operations. |
+| toString() | None | **optional** traversal=TRAVERSALS.TRAVERSAL_INORDER | A string representation of the binary trees keys. | Converts all node keys to string and lists them.  The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.TRAVERSAL_INORDER** (prints sorted, ascending). |
+
+#### Examples
+
+Example of creating a stack, pushing 4 elements onto it, and then popping them off.
+``` python
+from gamzia.datastructures import Stack
+
+# Create empty stack
+stack=Stack()
+
+# Add four items
+stack.push("Earth")
+stack.push("Mars")
+stack.push("Jupiter")
+stack.push("Saturn")
+
+# Display current stack
+print ("Stack:",stack.toString())
+
+# Get the size
+print("Size:",stack.size())
+
+# Peek at the top and bottom items
+print("Top:",stack.peek())
+print("Bottom",stack.bottom())
+
+# Remove a couple of elements
+s = stack.pop()
+s = stack.pop()
+
+print("Top:",stack.peek())
+print("Bottom:",stack.bottom())
+print("Size:",stack.size())
+print("Stack:",stack.toString())
+
+# Clear it
+stack.clear()
+print("Size after clear:",stack.size())
+
+```
+
+#### Misc
+
+Running the following:
+``` bash
+python datastructures.py
+```
+
+...will execute the datastructure unit test cases, which test all the data structures in the module.
+
+***
+
+## <a id="info_filedescriptor>FileDescriptor</a>
 
