@@ -14,7 +14,7 @@
 #            method which had somehow been forgotten.  Still need to
 #            determine if delete is to be supported (literature suggests not
 #            to, or to implement a lazy delete / flagged delete.)  Added a
-#            test case for find, and found typo bug (fixed).
+#            test case for find, and found typo bug (fixed).  Cleaned up enum.
 
 from enum import Enum
 
@@ -28,10 +28,10 @@ APP_BLURB   = "Library containing simple data structures for Python"
 APP_SYNTAX  = "'import gamzia.datastructures' or example: 'from gamzia.datastructures import Stack'"
 
 class TRAVERSALS(Enum):
-   TRAVERSAL_INORDER   = 1
-   TRAVERSAL_REVERSE   = 2
-   TRAVERSAL_PREORDER  = 3
-   TRAVERSAL_POSTORDER = 4
+   INORDER   = 1
+   REVERSE   = 2
+   PREORDER  = 3
+   POSTORDER = 4
 
 # Classic LIFO structure
 class Stack:
@@ -279,21 +279,21 @@ class BinaryTree:
 
    # Traverses the tree by requested order.  Returns a list of
    # all values, in order defined by the TRAVERSALS enumeration.
-   def traverse(self, traversalOrder=TRAVERSALS.TRAVERSAL_INORDER):
+   def traverse(self, traversalOrder=TRAVERSALS.INORDER):
       bucket=[]
-      if (traversalOrder==TRAVERSALS.TRAVERSAL_INORDER):
+      if (traversalOrder==TRAVERSALS.INORDER):
          self.__traverseInOrder(self.__root, bucket)
-      elif (traversalOrder==TRAVERSALS.TRAVERSAL_REVERSE):
+      elif (traversalOrder==TRAVERSALS.REVERSE):
          self.__traverseReverse(self.__root, bucket)
-      elif (traversalOrder==TRAVERSALS.TRAVERSAL_PREORDER):
+      elif (traversalOrder==TRAVERSALS.PREORDER):
          self.__traversePreOrder(self.__root, bucket)
-      elif (traversalOrder==TRAVERSALS.TRAVERSAL_POSTORDER):
+      elif (traversalOrder==TRAVERSALS.POSTORDER):
          self.__traversePostOrder(self.__root, bucket)
       return(bucket)
 
    # Converts all node keys to string and lists them.
    # The optional parameter represents the order of rendering.
-   def toString(self, traversal=TRAVERSALS.TRAVERSAL_INORDER):
+   def toString(self, traversal=TRAVERSALS.INORDER):
       l = self.traverse(traversal)
       result=""
       for s in l:
@@ -605,10 +605,10 @@ def testBinaryTree():
 
    # Print order traversals (inorder, reverse, preorder, postorder)
    print()
-   print(f"The tree traversed in order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_INORDER)}")
-   print(f"The tree traversed in reverse order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_REVERSE)}")
-   print(f"The tree traversed in pre-order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_PREORDER)}")
-   print(f"The tree traversed in post-order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_POSTORDER)}")
+   print(f"The tree traversed in order:\n{tree.traverse(TRAVERSALS.INORDER)}")
+   print(f"The tree traversed in reverse order:\n{tree.traverse(TRAVERSALS.REVERSE)}")
+   print(f"The tree traversed in pre-order:\n{tree.traverse(TRAVERSALS.PREORDER)}")
+   print(f"The tree traversed in post-order:\n{tree.traverse(TRAVERSALS.POSTORDER)}")
 
    # Add data to a node (update) and test find
    tnode=TreeNode(17, "Why was there no '17 Candles'?")
@@ -621,7 +621,7 @@ def testBinaryTree():
    print ("Testing toString():")
    print(f"'{tree.toString()}'")
    print ("Testing toString() reverse traversal:")
-   print(f"'{tree.toString(traversal=TRAVERSALS.TRAVERSAL_REVERSE)}'")
+   print(f"'{tree.toString(traversal=TRAVERSALS.REVERSE)}'")
 
    print()
    print("Done testing BinaryTree!")
