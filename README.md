@@ -391,7 +391,7 @@ Example of creating a queue, enqueueing 4 elements into it, and then dequeueing 
 ``` python
 from gamzia.datastructures import Queue
 
-# Create empty stack
+# Create empty queue
 queue=Queue()
 
 # Add four items
@@ -400,7 +400,7 @@ queue.enqueue("Mars")
 queue.enqueue("Jupiter")
 queue.enqueue("Saturn")
 
-# Display current stack
+# Display current queue
 print ("Queue:",queue.toString())
 
 # Get the size
@@ -446,15 +446,18 @@ BinaryTrees can be traversed in four manners: inorder (sorted), reverse inorder 
 
 #### Enumeration: Traversals
 
+``` python
 class TRAVERSALS(Enum):
    TRAVERSAL_INORDER   = 1
    TRAVERSAL_REVERSE   = 2
    TRAVERSAL_PREORDER  = 3
    TRAVERSAL_POSTORDER = 4
-   
+```
+
 #### Methods
 
 ##### TreeNode Class
+The Key-Data combination is a dictionary pattern, same as a key-value pair.
 | Method | Parameters | Returns | Summary |
 |:-----|:--------|:-------|:-------|
 | TreeNode() | integer or string key, **optional** object data | Class instance | Inherits from Node; contains BinaryTree specific node values. |
@@ -464,54 +467,89 @@ class TRAVERSALS(Enum):
 | Method | Alias(es) |Parameters | Returns | Summary |
 |:-----|:--------|:--------|:-------|:-------|
 | BinaryTree() | None | None | Class instance | Creates an empty stack structure. |
-| insert() | put(), set(), push_back() | Object | nothing | nothing | Places an object element on the top of the stack. |
-| insertKey() | take(), get(), pop_back() | None | The top element of the stack, or None if stack is empty | Removes and returns the top stack element if there is one. |
-| exists() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
-| search() | find(), retrieve(), get() | Key | Returns the tree node with the associated key, or None if not found | Non-destructive. |
-| traverse() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| getHeight() | | | |
+| insert() | put(), push() | TreeNode | nothing | Inserts a new treenode into the binary tree, based on **treenode.key** |
+| insertKey() | None | string or integer Key | nothing | Like insert(), but only inserts a key, without associated data. |
+| exists() | doesexist() | string or integer Key | True if key is in binary tree, False otherwise | Searches nodes to see if one with the specified key exists |
+| search() | find(), retrieve(), get() | string or integer Key | Returns the tree node with the associated key, or None if not found | Non-destructive. |
+| traverse() | None | **optional** traversal=TRAVERSALS.TRAVERSAL_INORDER | A list of binary tree node keys in the order requested. | The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.TRAVERSAL_INORDER** (prints sorted, ascending). |
 | min() | None | None | The lowest key value in the tree. | The min value is tracked during an insert, so this call is heavily optimized. |
 | max() | None | None | The highest key value in the tree. | The max value is tracked during an insert, so this call is heavily optimized. |
-| size() | None | None | The integer number of nodes in the binary tree. | This method is fully optimized for speed; counting is done on insert operations. |
+| size() | length() | None | The integer number of nodes in the binary tree. | This method is fully optimized for speed; counting is done on insert operations. |
 | toString() | None | **optional** traversal=TRAVERSALS.TRAVERSAL_INORDER | A string representation of the binary trees keys. | Converts all node keys to string and lists them.  The optional parameter traversal represents the order of rendering; the default is **TRAVERSALS.TRAVERSAL_INORDER** (prints sorted, ascending). |
+
+##### Not Implemented:
+  * delete()  
+  Delete is a precarious operation in trees.  It can unbalance them, and can take significant  time to complete.  Most of the litterature recommends avoiding deletes or using a lazy delete style.  Ideally, the delete would both remove the node, chain the parent node with children nodes, and then rebalance the tree.  Also, some initial testing showed issues with Python not freeing up deleted nodes if a reference was left to them, so it must be implemented cautiously. **FUTURE IMPLEMENTATION**
+  * getHeight()  
+  Only has a partial implementation. Returns a tuple of (left height, right height) from the root node.  Do not rely on this method!  The current implementation is incomplete; it calculates the height of the extreme left branch and the extreme right branch, but nested children may extend the height to deeper levels and they are currently ignored.  **FUTURE IMPLEMENTATION**
+  * clear()  
+  Since this would require sequentially deleting all nodes (bottom - up), and delete is not implemented, neither is clear().  However, this is simply done by just recreating a new class instance:
+  ``` python
+  bst=BinaryTree()
+  bst.insert(20)
+  bst.insert(10)
+  bst.insert(30)
+  
+  # Clear bst:
+  bst=BinaryTree()
+  ```
+  This approach will ensure Python memory management handles frees the old tree and associated nodes.  **FUTURE IMPLEMENTATION**
 
 #### Examples
 
 Example of creating a stack, pushing 4 elements onto it, and then popping them off.
 ``` python
-from gamzia.datastructures import Stack
+from gamzia.datastructures import BinaryTree, TreeNode, TRAVERSALS
 
-# Create empty stack
-stack=Stack()
+# Create empty binary search tree
+bst=BinaryTree()
 
-# Add four items
-stack.push("Earth")
-stack.push("Mars")
-stack.push("Jupiter")
-stack.push("Saturn")
+# Add four items, string keys with string data
+tnode=TreeNode()
+tnode.key="Earth"
+tnode.data="3rd Rock from the Sun"
+bst.insert("Earth")
 
-# Display current stack
-print ("Stack:",stack.toString())
+tnode=TreeNode()
+tnode.key="Mars"
+tnode.data="Red dusty desert."
+bst.insert("Earth")
+
+tnode=TreeNode()
+tnode.key="Jupiter"
+tnode.data="Fat planet with killer storms."
+bst.insert("Earth")
+
+tnode=TreeNode()
+tnode.key="Saturn"
+tnode.data="If you like it, put a ring on it"
+bst.insert("Earth")
+
+# Display current bst tree, sorted ascending
+print ("Binary Tree:",stack.toString())
 
 # Get the size
 print("Size:",stack.size())
 
-# Peek at the top and bottom items
-print("Top:",stack.peek())
-print("Bottom",stack.bottom())
+# Get the data for Earth
+tnode=bst.find("Earth")
+print(f"Key: {tnode.key}  |  Data: {tnode.data}")
 
-# Remove a couple of elements
-s = stack.pop()
-s = stack.pop()
+# Update Earth data, display
+tnode=TreeNode()
+tnode.key="Earth"
+tnode.data="This is new data for Earth, demonstrating an update operation.")
+bst.insert(tnode)
+tnode=bst.find("Earth")
+print(f"Key: {tnode.key}  |  Data: {tnode.data}")
 
-print("Top:",stack.peek())
-print("Bottom:",stack.bottom())
-print("Size:",stack.size())
-print("Stack:",stack.toString())
+# Show min and max values:
+print("Min:",bst.min())
+print("Size:",bst.max())
 
 # Clear it
-stack.clear()
-print("Size after clear:",stack.size())
+bst=BinaryTree()
+print("Size after clear:",bst.size())
 
 ```
 
@@ -526,5 +564,5 @@ python datastructures.py
 
 ***
 
-## <a id="info_filedescriptor>FileDescriptor</a>
+## <a id="info_filedescriptor">FileDescriptor</a>
 
