@@ -9,7 +9,12 @@
 #               LO  Queue  Stack
 #               FO  Stack  Queue
 
-# Binary Tree
+# KSU 201014 Updated BinaryTree testing, added some aliases, implemented
+#            duplicate key as update use case for insert, added toString()
+#            method which had somehow been forgotten.  Still need to
+#            determine if delete is to be supported (literature suggests not
+#            to, or to implement a lazy delete / flagged delete.)  Added a
+#            test case for find, and found typo bug (fixed).
 
 from enum import Enum
 
@@ -112,12 +117,16 @@ class Queue:
       self.add=self.enqueue
       self.append=self.enqueue
       self.queue=self.enqueue
+      self.push=self.enqueue
+      self.pop=self.dequeue
+      self.take=self.dequeue
+      self.get=self.dequeue
       self.peek=self.first
-      self.reset=self.clear
       self.front=self.first
       self.back=self.last
       self.reset=self.clear
       self.delete=self.clear
+      self.length=self.size
 
    # Empties stack.
    def clear(self):
@@ -163,7 +172,7 @@ class Queue:
       s=""
       for value in self.__queue:
          s+=f"{value}\n"
-      return(s)   
+      return(s)
 
 #*************************************************************************
 
@@ -178,7 +187,7 @@ class Node:
    # and replace with their attributes
    def copy(self):
       return(Node(self.key, self.data))
-      
+
 class TreeNode(Node):
    def __init__(self, key, data=None):
       self.key=key
@@ -205,9 +214,13 @@ class BinaryTree:
 
       # Convenience methods
       self.doesexist=self.exists
+      self.find=self.search
+      self.put=self.insert
+      self.push=self.insert
       self.retrieve=self.search
       self.remove=self.delete
       self.get=self.search
+      self.length=self.size
       #self.reset=self.clear
 
    #def clear(self):
@@ -266,7 +279,7 @@ class BinaryTree:
 
    # Traverses the tree by requested order.  Returns a list of
    # all values, in order defined by the TRAVERSALS enumeration.
-   def traverse(self, traversalOrder):
+   def traverse(self, traversalOrder=TRAVERSALS.TRAVERSAL_INORDER):
       bucket=[]
       if (traversalOrder==TRAVERSALS.TRAVERSAL_INORDER):
          self.__traverseInOrder(self.__root, bucket)
@@ -277,6 +290,17 @@ class BinaryTree:
       elif (traversalOrder==TRAVERSALS.TRAVERSAL_POSTORDER):
          self.__traversePostOrder(self.__root, bucket)
       return(bucket)
+
+   # Converts all node keys to string and lists them.
+   # The optional parameter represents the order of rendering.
+   def toString(self, traversal=TRAVERSALS.TRAVERSAL_INORDER):
+      l = self.traverse(traversal)
+      result=""
+      for s in l:
+         result = f"{result}, {s}"
+      if result.startswith(","):
+         result=result[1::].lstrip()
+      return(result)
 
    # Inserts a tnode by key into tree, updates size, min & max
    def insert(self, tnode):
@@ -295,8 +319,13 @@ class BinaryTree:
          while True:
             parent=current
 
-            # Start with left leaf (<)
-            if (key < parent.key):
+            # Start with duplicate test (update case)
+            if (key == parent.key):
+               parent.data = treenode.data
+               return
+
+            # Check to the left left (<)
+            elif (key < parent.key):
                current = current.leftChild
                # Insert left
                if (not current):
@@ -350,7 +379,7 @@ class BinaryTree:
 
    # Searchs a tree for value, returns the node if found, None otherwise.
    def search(self, key):
-      current = self._root
+      current = self.__root
 
       if (not current):
          return False
@@ -377,6 +406,7 @@ class BinaryTree:
    # a tuple of (left height, right height). Note that the height
    # can be 0 (root only), -1(tree is null), or x (number of left/right
    # children
+   # TODO: Broken (doesn't handle nested subtrees with depth)
    def getHeight(self):
       # Validate
       if (self.__root is None):
@@ -548,10 +578,12 @@ def testBinaryTree():
 
    # Test insert
    keys=[10, 8, 16, 19, 7, 14, 18, 6, 1, 4, 20, 13, 11, 5, 3, 15, 2, 17, 9, 12]
-   keys=["alto sax", "bass guitar", "cello", "drums", "electric snare"]
+   #keys=["alto sax", "bass guitar", "cello", "drums", "electric snare"]
    print("Inserting 20 integer keys without associated data...")
    for key in keys:
       tree.insertKey(key)
+   # Test duplicate key insert
+   tree.insertKey(2)
 
    # Test exists, min, max, size
    print("Testing if exists for 30 elements (should be 20 True, 10 False)...")
@@ -578,6 +610,20 @@ def testBinaryTree():
    print(f"The tree traversed in pre-order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_PREORDER)}")
    print(f"The tree traversed in post-order:\n{tree.traverse(TRAVERSALS.TRAVERSAL_POSTORDER)}")
 
+   # Add data to a node (update) and test find
+   tnode=TreeNode(17, "Why was there no '17 Candles'?")
+   tree.insert(tnode)
+   tnode=tree.find(17)
+   print(f"Key: {tnode.key}  =  Data: {tnode.data}")
+
+   # toString with default, and optional param
+   print()
+   print ("Testing toString():")
+   print(f"'{tree.toString()}'")
+   print ("Testing toString() reverse traversal:")
+   print(f"'{tree.toString(traversal=TRAVERSALS.TRAVERSAL_REVERSE)}'")
+
+   print()
    print("Done testing BinaryTree!")
 
 def main():
