@@ -560,7 +560,7 @@ python datastructures.py
 
 ## <a id="info_filedescriptor">FileDescriptor</a>
 
-The FileDescriptor class was a purpose built class for implementation of the [FBomb](#https://www.github.com/Sultaneous/fbomb) file-transfer protocol.  However, when building clients and servers supportring FBomb, it became useful to break out FileDescriptor as a generic class for quick adoption.
+The FileDescriptor class was a purpose built class for implementation of the [FBomb](https://www.github.com/Sultaneous/fbomb) file-transfer protocol.  However, when building clients and servers supportring FBomb, it became useful to break out FileDescriptor as a generic class for quick adoption.
 
 FileDescriptor assembles important metadata about a particular file in the file system. It is quickly transformed into a simple JSON representation, and the serialized JSON is easily sent over the network between client and server.  The same logic was replicated in C# to produce a C# FBomb client which seamlessly communicates with a Python based FBomb server.
 
@@ -580,18 +580,21 @@ fd=FD()
 
 # populate with file meta data for "temp.txt"
 if (not fd.populate("temp.txt")):
-  print("Error! Does file exist?)
+  print("Error! Does file exist?")
   exit()
   
 # Serialize it
 s=fd.serialize()
-print (json.dumps(s, indent=3))
+print (s)
 
 # Create a new instance from JSON string
 fd2=FD.deserialize(s)
 
 # Show that they are different objects
 print(f"fd = fd2?  {fd==fd2}")
+
+# Show that the JSON strings are the same
+print(f"Json(fd) = Json(fd2)?  {fd.serialize()==fd2.serialize()}")
 
 # Display second object instance
 print(fd2.toString())
@@ -601,10 +604,10 @@ print(fd2.toString())
 | Method | Parameters | Returns | Summary |
 |:-----|:--------|:-------|:-------|
 | FileDescriptor() | None | Class instance | Constructor |
-| populate() | None | nothing | Starts the timer |
-| serialize() | None | nothing | Stops the timer |
-| **statuc** deserialize() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time |
-| toString() | None | Returns the final elapsed time in seconds. | Assumes timer is stopped.  Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+| populate() | None | True on success, False otherwise (usually due to file does not exist errors). | Assembles the meta data and SHA256 hash for the specified file. |
+| serialize() | None | A JSON string | Creates a JSON representation of the object instance, using only its public value attributes. |
+| **static** deserialize() | None | A new FileDescriptor class instance, poulated | This is a static, factory method for creating objects from JSON strings. |
+| toString() | None | string representation of object instance | Displays public value attributes only. |
 
 #### Misc
 
