@@ -560,3 +560,59 @@ python datastructures.py
 
 ## <a id="info_filedescriptor">FileDescriptor</a>
 
+The FileDescriptor class was a purpose built class for implementation of the [FBomb](#https://www.github.com/Sultaneous/fbomb) file-transfer protocol.  However, when building clients and servers supportring FBomb, it became useful to break out FileDescriptor as a generic class for quick adoption.
+
+FileDescriptor assembles important metadata about a particular file in the file system. It is quickly transformed into a simple JSON representation, and the serialized JSON is easily sent over the network between client and server.  The same logic was replicated in C# to produce a C# FBomb client which seamlessly communicates with a Python based FBomb server.
+
+To create the JSON object, first the class fields are populated, afterwhich reflection is used to extract the public value attributes and create a dictionary. Python's JSON library handles dictionaries quite well, and outputs the JSON string.  Deserialization is done via a static factory method, which converts the JSON representation back to a dictionary and then dynamically populates a new FileDescriptor instance with the values (again, using refletion style techniques).
+
+#### Usage examples:
+``` python
+from filedescriptor import FileDescriptor as FD
+```
+Or, if using the gamzia package:
+``` python
+from gamzia.filedescriptor import FileDescriptor as FD
+```
+``` python
+# Create an instance
+fd=FD()
+
+# populate with file meta data for "temp.txt"
+if (not fd.populate("temp.txt")):
+  print("Error! Does file exist?)
+  exit()
+  
+# Serialize it
+s=fd.serialize()
+print (json.dumps(s, indent=3))
+
+# Create a new instance from JSON string
+fd2=FD.deserialize(s)
+
+# Show that they are different objects
+print(f"fd = fd2?  {fd==fd2}")
+
+# Display second object instance
+print(fd2.toString())
+```
+
+#### Methods
+| Method | Parameters | Returns | Summary |
+|:-----|:--------|:-------|:-------|
+| FileDescriptor() | None | Class instance | Constructor |
+| populate() | None | nothing | Starts the timer |
+| serialize() | None | nothing | Stops the timer |
+| **statuc** deserialize() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time |
+| toString() | None | Returns the final elapsed time in seconds. | Assumes timer is stopped.  Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+
+#### Misc
+
+Running the following:
+``` bash
+python filedescriptor.py
+```
+
+...will execute the FileDescripor unit test cases.
+
+***
