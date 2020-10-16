@@ -604,7 +604,7 @@ print(fd2.toString())
 | Method | Parameters | Returns | Summary |
 |:-----|:--------|:-------|:-------|
 | FileDescriptor() | None | Class instance | Constructor |
-| populate() | None | True on success, False otherwise (usually due to file does not exist errors). | Assembles the meta data and SHA256 hash for the specified file. |
+| populate() | string filename | True on success, False otherwise (usually due to file does not exist errors). | Assembles the meta data and SHA256 hash for the specified file. |
 | serialize() | None | A JSON string | Creates a JSON representation of the object instance, using only its public value attributes. |
 | **static** deserialize() | None | A new FileDescriptor class instance, poulated | This is a static, factory method for creating objects from JSON strings. |
 | toString() | None | string representation of object instance | Displays public value attributes only. |
