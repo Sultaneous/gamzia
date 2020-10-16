@@ -564,7 +564,7 @@ The FileDescriptor class was a purpose built class for implementation of the [FB
 
 FileDescriptor assembles important metadata about a particular file in the file system. It is quickly transformed into a simple JSON representation, and the serialized JSON is easily sent over the network between client and server.  The same logic was replicated in C# to produce a C# FBomb client which seamlessly communicates with a Python based FBomb server.
 
-To create the JSON object, first the class fields are populated, afterwhich reflection is used to extract the public value attributes and create a dictionary. Python's JSON library handles dictionaries quite well, and outputs the JSON string.  Deserialization is done via a static factory method, which converts the JSON representation back to a dictionary and then dynamically populates a new FileDescriptor instance with the values (again, using refletion style techniques).
+To create the JSON object, first the class fields are populated, afterwhich reflection is used to extract the public value attributes and create a dictionary. Python's JSON library handles dictionaries quite well, and outputs the JSON string.  Deserialization is done via a static factory method, which converts the JSON representation back to a dictionary and then dynamically populates a new FileDescriptor instance with the values (again, using reflection style techniques).
 
 #### Usage examples:
 ``` python
@@ -573,6 +573,7 @@ from filedescriptor import FileDescriptor as FD
 Or, if using the gamzia package:
 ``` python
 from gamzia.filedescriptor import FileDescriptor as FD
+from gamzia.filedescriptor import FILEMODE, HASHTYPE
 ```
 ``` python
 # Create an instance
@@ -583,6 +584,9 @@ if (not fd.populate("temp.txt")):
   print("Error! Does file exist?")
   exit()
   
+# Change file type to ASCI (defaults to binary).
+fd.filemode=FILEMODE.ASCII
+
 # Serialize it
 s=fd.serialize()
 print (s)
@@ -600,6 +604,24 @@ print(f"Json(fd) = Json(fd2)?  {fd.serialize()==fd2.serialize()}")
 print(fd2.toString())
 ```
 
+#### Enums
+
+FileDescriptor implements two enumerations. Note that they use multiple inheritance, as Enums can't be JSON serialized, but strings can.
+
+```python
+class FILEMODE(str, Enum):
+   ASCII="ASCII"
+   BINARY="BINARY"
+
+class HASHTYPE(str, Enum):
+   SHA128 = "SHA128"
+   SHA224 = "SHA224"
+   SHA256 = "SHA256"
+   SHA384 = "SHA384"
+   SHA512 = "SHA512"
+   MD5 = "MD5"
+```
+
 #### Methods
 | Method | Parameters | Returns | Summary |
 |:-----|:--------|:-------|:-------|
@@ -607,7 +629,8 @@ print(fd2.toString())
 | populate() | string filename | True on success, False otherwise (usually due to file does not exist errors). | Assembles the meta data and SHA256 hash for the specified file. |
 | serialize() | None | A JSON string | Creates a JSON representation of the object instance, using only its public value attributes. |
 | **static** deserialize() | None | A new FileDescriptor class instance, poulated | This is a static, factory method for creating objects from JSON strings. |
-| toString() | None | string representation of object instance | Displays public value attributes only. |
+! toDictionary() | None | A dictionary representation of object instance | Adds only entries for public value attributes. |
+| toString() | None | A string representation of object instance | Displays public value attributes only. |
 
 #### Misc
 
