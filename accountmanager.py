@@ -42,10 +42,10 @@ DEF_TESTDB="unit_tests.db"        # Default unit test database filename
 class AccountManager():
    def __init__(self, dbname=DEF_DBNAME):
       self.dbname=dbname
-      self.createAccountsTable()
+      self.__createAccountsTable()
 
    # Returns true if table exists in DB
-   def doesTableExist(self):
+   def __doesTableExist(self):
       try:
          with sql.connect(self.dbname) as c:
             k=c.cursor()
@@ -78,8 +78,8 @@ class AccountManager():
 
    # Creates the accounts table.  Only used for new dbs.
    # Sets username column to unique, case insensitive.
-   def createAccountsTable(self):
-      if not self.doesTableExist():
+   def __createAccountsTable(self):
+      if not self.__doesTableExist():
          # Table does not exist so create it
          try:
             with sql.connect(self.dbname) as c:
