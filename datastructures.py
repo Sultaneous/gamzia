@@ -15,6 +15,11 @@
 #            determine if delete is to be supported (literature suggests not
 #            to, or to implement a lazy delete / flagged delete.)  Added a
 #            test case for find, and found typo bug (fixed).  Cleaned up enum.
+# KSU 201119 Added iterators to Stack and Queue.  Iterators are destructive.  For
+#            example, it will pop items off the stack until the stack is empty.
+#            Added head, tail and copy to queue.  Updated unit tests.
+#            NOTE: Score one for python making adding iteration a snap.  Java,
+#            C#: take note!
 
 from enum import Enum
 
@@ -33,10 +38,12 @@ class TRAVERSALS(Enum):
    PREORDER  = 3
    POSTORDER = 4
 
+#*************************************************************************
+
 # Classic LIFO structure
 class Stack:
    def __init__(self):
-      self._stack=[]
+      self.__stack=[]
       self.isdebug=False
 
       # Some convenience methods for users of other languages
@@ -55,14 +62,30 @@ class Stack:
       self.delete=self.clear
       self.length=self.size
 
+   # Iter() + next() implements iterative protocol.
+   # __iter__ must return an iterative object
+   def __iter__(self):
+      return self
+
+   # Next must return the next item (data) in the sequence,
+   # or raise the StopIteration exception.
+   # Note that iterating on a queue is destructive to the stack.
+   # Make a deep copy if you require the original.
+   def __next__(self):
+      data = self.pop()
+      if (data==None):
+         raise StopIteration
+      else:
+         return data
+
    # Empties stack.
    def clear(self):
-      del(self._stack)
-      self._stack=[]
+      del(self.__stack)
+      self.__stack=[]
 
    # Places item on top of stack.
    def push(self, obj):
-      self._stack.append(obj)
+      self.__stack.append(obj)
       if (self.isdebug):
          print(f"   Pushed {obj} onto stack. Size:  {self.size()}")
 
@@ -72,33 +95,40 @@ class Stack:
          if (self.isdebug):
             print(f"   Removed top item '{self.peek()}' from stack." \
                   f"  Size: {self.size()}")
-         return(self._stack.pop())
+         return(self.__stack.pop())
       else:
          return(None)
 
    # Reveals top item on stack without discarding it.
    def peek(self):
       if self.size()>0:
-         return(self._stack[-1])
+         return(self.__stack[-1])
       else:
          return(None)
 
    # Returns the bottom item in a stack, non destructively
    def bottom(self):
       if (self.size()>0):
-         return(self._stack[0])
+         return(self.__stack[0])
       else:
          return(None)
 
    # Returns size of stack
    def size(self):
-      return  (len(self._stack))
+      return  (len(self.__stack))
+
+   # Makes a deep copy of itself
+   def copy(self):
+      s=Stack()
+      for data in self.__stack:
+         s.push(data)
+      return(s)
 
    # Creates a string representation of stack, bottom up by default.
    # Set topdown=True for a visualization of stack from top downwards.
    def toString(self, topdown=False):
       s=""
-      for value in self._stack:
+      for value in self.__stack:
          if (topdown):
             s=f"{value}\n"+s
          else:
@@ -121,25 +151,43 @@ class Queue:
       self.pop=self.dequeue
       self.take=self.dequeue
       self.get=self.dequeue
-      self.peek=self.first
-      self.front=self.first
-      self.back=self.last
+      self.first=self.head
+      self.peek=self.head
+      self.front=self.head
+      self.last=self.tail
+      self.back=self.tail
       self.reset=self.clear
       self.delete=self.clear
       self.length=self.size
 
-   # Empties stack.
+   # Iter() + next() implements iterative protocol.
+   # __iter__ must return an iterative object
+   def __iter__(self):
+      return self
+
+   # Next must return the next item (data) in the sequence,
+   # or raise the StopIteration exception.
+   # Note that iterating on a queue is destructive to the queue.
+   # Make a deep copy if you require the original.
+   def __next__(self):
+      data = self.dequeue()
+      if (data==None):
+         raise StopIteration
+      else:
+         return data
+
+   # Empties queue.
    def clear(self):
       del(self.__queue)
       self.__queue=[]
 
-   # Places item on top of stack.
+   # Places item at tail of queue.
    def enqueue(self, obj):
       self.__queue.append(obj)
       if (self.isdebug):
          print(f"   Enqueued '{obj}' into queue. Size:  {self.size()}")
 
-   # Removes top item from stack and returns it.
+   # Removes head item from queue and returns it.
    def dequeue(self):
       if (self.size()>0):
          if (self.isdebug):
@@ -150,22 +198,28 @@ class Queue:
          return(None)
 
    # Reveals first item in queue without discarding it.
-   def first(self):
+   def head(self):
       if self.size()>0:
          return(self.__queue[0])
       else:
          return(None)
 
-   # Returns the bottom item in a stack, non destructively
-   def last(self):
+   # Returns the tail item in a queue, non destructively
+   def tail(self):
       if (self.size()>0):
          return(self.__queue[-1])
       else:
          return(None)
-
-   # Returns size of stack
+   # Returns size of queue
    def size(self):
       return  (len(self.__queue))
+
+   # Makes a deep copy of itself
+   def copy(self):
+      q=Queue()
+      for data in self.__queue:
+         q.enqueue(data)
+      return(q)
 
    # Creates a string representation of queue, front to back.
    def toString(self):
@@ -224,13 +278,7 @@ class BinaryTree:
       #self.reset=self.clear
 
    #def clear(self):
-      # Remove root reference and trust Python to manage memory.
-      # I'm curious about this, it needs to be tested.
-      # If Python doesn't handle it, change this to traversal + del
-      # for each node.
-      # Ok, tested it.  Python does not remove nodes.
-      # Rather than traversal, disallowing "clear" routine.
-      # Caller should delete old tree, create new instance.
+      # TODO: Implememt delete algorithm as explained in Algorithm Book (Correl et al.)
 
    # Walks the tree in ascending sorted order
    def __traverseInOrder(self, node, bucket):
@@ -453,7 +501,7 @@ class BinaryTree:
    # Deletes a node from the BST based on key.
    # Automatically rebalances tree.
    def delete(self, key):
-      self.__size-=1
+      #self.__size-=1
       #reset min, max -> use inorder traversal, take 1st and last elements
       pass
 
@@ -497,10 +545,15 @@ def testStack():
    print (f"Bottom of stack: {stack.bottom()}")
    print (f"Stack size is {stack.size()}")
 
-   # Test pop
-   print (f"\nPopping all items off stack.")
-   while stack.size()>0:
-      print(f"   Got: {stack.pop()}")
+   # Test deep copy
+   s=stack.copy()
+   print(f"Is stack object the same as copy? {stack==s}")
+   print(f"Is stack data the same as copy's? {stack.toString()==s.toString()}")
+
+   # Test pop iteratively
+   print (f"\nPopping all items off stack via iteration.")
+   for data in stack:
+      print(f"   Got: {data}")
 
    print (f"Stack size is {stack.size()}")
 
@@ -539,21 +592,26 @@ def testQueue():
    print(f"Front to Back view:\n{queue.toString()}")
 
    # Test first, last, size
-   print (f"Front of queue: {queue.first()}")
-   print (f"End of queue: {queue.last()}")
+   print (f"Head of queue: {queue.first()}")
+   print (f"Tail of queue: {queue.last()}")
    print (f"Queue size is {queue.size()}")
 
-   # Test dequeue
-   print (f"\Dequeueing all items off stack.")
-   while queue.size()>0:
-      print(f"   Got: {queue.dequeue()}")
+   # Test deep copy
+   q=queue.copy()
+   print(f"Is queue object the same as copy? {queue==q}")
+   print(f"Is queue data the same as copy's? {queue.toString()==q.toString()}")
+
+   # Test iterative dequeue
+   print (f"Dequeueing all items off stack via iteration...")
+   for data in queue:
+      print(f"   Got: {data}")
 
    print (f"Queue size is {queue.size()}")
 
    # Test peek at empty
    print()
-   print (f"Front of empty, should be 'None': {queue.front()}")
-   print (f"Back of empty, should be 'None': {queue.back()}")
+   print (f"Head of empty, should be 'None': {queue.front()}")
+   print (f"Tail of empty, should be 'None': {queue.back()}")
 
    # Test dequeue from empty
    print (f"Dequeue from empty, should be 'None': {queue.dequeue()}")
