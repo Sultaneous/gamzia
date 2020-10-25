@@ -9,6 +9,7 @@
 # 200922 KSU Switched to "clean" JSON for cross-platform usage.
 # 201015 KSU Added meta data population method; previously this was done
 #            externally.
+# 201025 KSU Updated to support str() and len(). I should have known. I didn't.
 
 from __future__ import annotations
 import types
@@ -44,6 +45,13 @@ class FileDescriptor:
       self.hashtype=HASHTYPE.SHA256
       # Is of type Enum FILEMODE
       self.filemode=FILEMODE.BINARY
+
+   def __str__(self):
+      return(self.toString())
+
+   # Slightly different, returns file length if known
+   def __len__(self):
+      return(self.length)
 
    def serialize(self):
       # old - using jsonpickle. Works easily but makes convoluted JSON.
