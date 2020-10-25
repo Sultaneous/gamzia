@@ -5,11 +5,11 @@
 # Use as follows within code:
 
 # KSU 201010 Made field attributes private.  Made elapsed() stop
-#                    the timer if it is still running.  Added sanity checks.
-#                    Added test cases.  Added some robustness.
-# KSU 201025 Added units to elapsed(). Updated test cases.  Fixed a previously uknown and  rather insidious
-#                     bug in timer.stop() which didn't check if it had already been stopped, and would update elapsed
-#                     time errantly.
+#            the timer if it is still running.  Added sanity checks.
+#            Added test cases.  Added some robustness.
+# KSU 201025 Added units to elapsed(). Updated test cases.  Fixed a previously
+#            uknown and  rather insidious bug in timer.stop() which didn't check
+#            if it had already been stopped, and would update elapsed time errantly.
 
 # Usage:
 # from timer import Timer
@@ -44,7 +44,7 @@ class Timer():
    def elapsed(self, unit="s"):
       # Acceptable units
       units={"ms":-1,"millis":-1, "milliseconds":-1, "s":0, "sec":0, "seconds":0, "m":1, "min":1, "minutes":1,
-                "h":2, "hrs":2, "hours":2, "d":3, "days":3}
+             "h":2, "hrs":2, "hours":2, "d":3, "days":3}
 
       # Sanity
       if (not unit in units.keys()):
