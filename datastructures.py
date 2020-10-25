@@ -15,12 +15,16 @@
 #            determine if delete is to be supported (literature suggests not
 #            to, or to implement a lazy delete / flagged delete.)  Added a
 #            test case for find, and found typo bug (fixed).  Cleaned up enum.
-# KSU 201119 Added iterators to Stack and Queue.  Iterators are destructive.  For
+# KSU 201019 Added iterators to Stack and Queue.  Iterators are destructive.  For
 #            example, it will pop items off the stack until the stack is empty.
 #            Added head, tail and copy to queue.  Updated unit tests.
 #            NOTE: Score one for python making adding iteration a snap.  Java,
 #            C#: take note!
+# KSU 201025 Added support for str() and len().  I should have known about these.
+#            But I didn't.  Also updated test cases and provided an example of
+#            how to iterate a BinaryTree.
 
+import random
 from enum import Enum
 
 # Constants
@@ -77,6 +81,14 @@ class Stack:
          raise StopIteration
       else:
          return data
+
+   # Produced size of structure
+   def __len__(self):
+      return self.size()
+
+   # Allows conversion of object to string by Python natives
+   def __str__(self):
+      return self.toString()
 
    # Empties stack.
    def clear(self):
@@ -176,6 +188,14 @@ class Queue:
       else:
          return data
 
+   # Produced size of structure
+   def __len__(self):
+      return self.size()
+
+   # Allows conversion of object to string by Python natives
+   def __str__(self):
+      return self.toString()
+   
    # Empties queue.
    def clear(self):
       del(self.__queue)
@@ -210,6 +230,7 @@ class Queue:
          return(self.__queue[-1])
       else:
          return(None)
+
    # Returns size of queue
    def size(self):
       return  (len(self.__queue))
@@ -258,6 +279,8 @@ class TreeNode(Node):
 
 # Binary tree construct.  Requries orderable key (int, str, etc...)
 # as it is based on ordering data by comparison.
+# Note: To iterate a BinaryTree, first traverse it with a chosen
+# order,  and then iterate the returned list and search eack key.
 class BinaryTree:
    def __init__(self):
       self.__root=None
@@ -277,6 +300,14 @@ class BinaryTree:
       self.length=self.size
       #self.reset=self.clear
 
+   # Produced size of structure
+   def __len__(self):
+      return self.size()
+
+   # Allows conversion of object to string by Python natives
+   def __str__(self):
+      return self.toString()
+   
    #def clear(self):
       # TODO: Implememt delete algorithm as explained in Algorithm Book (Correl et al.)
 
@@ -540,10 +571,13 @@ def testStack():
    print(f"Bottom up view:\n{stack.toString()}")
    print(f"Top down view:\n{stack.toString(topdown=True)}")
 
+   # Test str()
+   print("On the fly conversion using str() yields:\n" + str(stack))
+
    # Test peek, size, bottom
    print (f"Top of stack: {stack.peek()}")
    print (f"Bottom of stack: {stack.bottom()}")
-   print (f"Stack size is {stack.size()}")
+   print (f"Stack.size() is {stack.size()} and via len(stack) it is {len(stack)}")
 
    # Test deep copy
    s=stack.copy()
@@ -589,12 +623,13 @@ def testQueue():
    queue.enqueue("drums")
 
    # Test toString()
-   print(f"Front to Back view:\n{queue.toString()}")
-
+   print(f"Front to Back view via queue.toString():\n{queue.toString()}")
+   print(f"Front to Back view via str(queue):\n" + str(queue))
+   
    # Test first, last, size
    print (f"Head of queue: {queue.first()}")
    print (f"Tail of queue: {queue.last()}")
-   print (f"Queue size is {queue.size()}")
+   print (f"Queue.size() is {queue.size()} and len(queue) is {len(queue)}")
 
    # Test deep copy
    q=queue.copy()
@@ -653,7 +688,7 @@ def testBinaryTree():
    tree.isdebug=True
 
    print()
-   print(f"The Size of the tree is: {tree.size()} nodes.")
+   print(f"The Size of the tree is: {tree.size()} nodes, and via len(tree) it is {len(tree)} nodes.")
    print(f"The smallest value in the tree is: {tree.min()}")
    print(f"The biggest value in the tree is: {tree.max()}")
 
@@ -676,11 +711,23 @@ def testBinaryTree():
 
    # toString with default, and optional param
    print()
-   print ("Testing toString():")
-   print(f"'{tree.toString()}'")
+   print ("Testing str(tree):")
+   print(str(tree))
    print ("Testing toString() reverse traversal:")
    print(f"'{tree.toString(traversal=TRAVERSALS.REVERSE)}'")
 
+   # Creating tree with random numbers as key and data
+   print ("Testing iteration on a random BinaryTree of 20 nodes.")
+   tree=BinaryTree()
+   for i in range(20):
+      tnode=TreeNode(random.randint(1,100))
+      tnode.data=tnode.key**2
+      tree.insert(tnode)
+   keys=tree.traverse(TRAVERSALS.INORDER)
+   for key in tree.traverse(TRAVERSALS.INORDER):
+      node=tree.search(key)
+      print (f"Key: {node.key}  |  Value: {node.data}")
+      
    print()
    print("Done testing BinaryTree!")
 
