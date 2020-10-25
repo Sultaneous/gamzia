@@ -305,6 +305,34 @@ Further usage examples are provided per class below.
 
 Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by the order of element entry, and unsorted.
 
+**Note** The Stack class supports the str() and len() commands. The Stack class supports iteration, returning the top data item each iteration, until the stack is empty. This type of iteration is destructive. If you want to preserve the stack, please make a copy via **stack.copy()** first.
+
+``` python
+# Iteration example
+stack = Stack()
+stack.push ("Alligattor")
+stack.push ("Bear")
+stack.push ("Cat")
+
+# Copy it first
+stack_cp = stack.copy()
+
+# Iterate top to bottom (Cat->Alligator)
+for data in stack_cp:
+   print(data)
+   
+# The copy is empty now:
+print (len(stack_cp))
+
+# But the original is preserved:
+print (len(stack))
+```
+
+#### Methods
+| Method | Alias(es) |Parameters | Returns | Summary |
+|:-----|:--------|:--------|:-------|:-------|
+
+
 #### Methods
 | Method | Alias(es) |Parameters | Returns | Summary |
 |:-----|:--------|:--------|:-------|:-------|
@@ -368,9 +396,32 @@ python datastructures.py
 
 ### <a id="info_queue">Queue</a>
 
-Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" and element, which removes the first element in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the front of the queue, or the "last" element  of the queue, which in both cases returns the element at that location wihout removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and unsorted.
+Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" and element, which removes the first element (head) in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the head of the queue, or the tail element of the queue, which in both cases returns the element at that location wihout removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and are unsorted.
 
-Whereas Stacks have a top to bottom type (up/down) organization, a queue has a front to back (left/right) orientation.
+Whereas Stacks have a "top to bottom" (up/down) organization, a queue has a "head to tail" or "front to back" (left/right) orientation.
+
+**Note** The Queue class supports the str() and len() commands. The  Queue class supports iteration, dequeueing the head data item each iteration, until the  queue is empty. This type of iteration is destructive. If you want to preserve the queue, please make a copy via **queue.copy()** first.
+
+``` python
+# Iteration example
+queue = Queue()
+queue.enqueue ("Alligattor")
+queue.enqueue ("Bear")
+queue.enqueue ("Cat")
+
+# Copy it first
+queue_cp = queue.copy()
+
+# Iterate head to tail (Alligator->Cat)
+for data in queue_cp:
+   print(data)
+   
+# The copy is empty now:
+print (len(queue_cp))
+
+# But the original is preserved:
+print (len(queue))
+```
 
 #### Methods
 | Method | Alias(es) |Parameters | Returns | Summary |
@@ -453,6 +504,26 @@ class TRAVERSALS(Enum):
    POSTORDER = 4
 ```
 
+**Note** The BinaryTree class supports the str() and len() commands. The BinaryTree class does not directly support iteration, as this action is undefined for the structure.  However, iteration can still be achieved by returning a list of keys in the desired traversal using **traverse()** and then iterating the keys and using **search()**:
+
+``` python
+# Iteration example
+# Stuff tree with dummy keys
+tree = BinaryTree()
+for i in range(20):
+   tree.insertKey(i)
+
+# Iterate keys:
+for key in tree.traverse(TRAVERSALS.INORDER):
+   node=tree.search(key)
+   
+   # There is no data in node, but this is how you would access it ift there were
+   print(f"Node key: {node.key}  |  Node data: {node.data})
+   
+# Prove it was non-destructive:
+print ("Size of tree is:", len(tree))
+```
+
 #### Methods
 
 ##### TreeNode Class
@@ -460,7 +531,7 @@ The Key-Data combination is a dictionary pattern, same as a key-value pair.
 | Method | Parameters | Returns | Summary |
 |:-----|:--------|:-------|:-------|
 | TreeNode() | integer or string key, **optional** object data | Class instance | Inherits from Node; contains BinaryTree specific node values. |
-| copy() | None | A deep copy of TreeNode object | Performs a deep copy, creating a new identical instance. |
+| copy() | None | A deep copy of TreeNode object | Performs a deep copy, creating a new instance with identical contents. |
 
 ##### BinaryTree Class
 | Method | Alias(es) |Parameters | Returns | Summary |
