@@ -59,7 +59,7 @@ print (f"Time taken: {my_timer.elapsed():.4f}")
 | start() | None | nothing | Starts the timer |
 | stop() | None | nothing | Stops the timer |
 | peek() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time |
-| elapsed() | None | Returns the final elapsed time in seconds. | Assumes timer is stopped.  Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+| elapsed() | **Optional** unit=seconds; choices are "ms|s|m|h|d" or "milliseconds|seconds|minutes|hours|days" | Returns the final elapsed time in seconds, or in the requested unit type. | Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
 
 #### Misc
 
