@@ -10,6 +10,9 @@
 # KSU 201025 Added units to elapsed(). Updated test cases.  Fixed a previously
 #            uknown and  rather insidious bug in timer.stop() which didn't check
 #            if it had already been stopped, and would update elapsed time errantly.
+# KSU 201028 Added support for nanoseconds and microseconds in timer.elapsed().
+#            Updated unit test for elapsed time accordingly.
+#            NOTE: The µ utf-8 character in windows is ALT-230.
 
 # Usage:
 # from timer import Timer
@@ -43,8 +46,8 @@ class Timer():
 
    def elapsed(self, unit="s"):
       # Acceptable units
-      units={"ms":-1,"millis":-1, "milliseconds":-1, "s":0, "sec":0, "seconds":0, "m":1, "min":1, "minutes":1,
-             "h":2, "hrs":2, "hours":2, "d":3, "days":3}
+      units={"ns": -3, "nano":-3, "nanoseconds":-3, "µs": -2, "micro":-2, "microseconds": -2, "ms":-1,"millis":-1, "milliseconds":-1, 
+             "s":0, "sec":0, "seconds":0, "m":1, "min":1, "minutes":1, "h":2, "hrs":2, "hours":2, "d":3, "days":3}
 
       # Sanity
       if (not unit in units.keys()):
@@ -60,12 +63,18 @@ class Timer():
 
       # Calculates units
       self.__timeElapsed = self.__timeStop - self.__timeStart
+      nanoseconds=self.__timeElapsed*1000*1000*1000
+      microseconds=self.__timeElapsed*1000*1000
       milliseconds = self.__timeElapsed*1000
       minutes = self.__timeElapsed / 60
       hours = minutes / 60
       days = hours / 24
 
-      if units[unit]==-1:
+      if units[unit]==-3:
+         value=nanoseconds
+      elif units[unit]==-2:
+         value=microseconds
+      elif units[unit]==-1:
          value=milliseconds
       elif units[unit]==1:
          value=minutes
@@ -162,6 +171,8 @@ def UnitTestUnits():
    timer.start()
    time.sleep(2)
    timer.stop()
+   print (f"Units -> nanoseconds: {timer.elapsed('ns'):,.4f}")
+   print (f"Units -> microseconds: {timer.elapsed('µs'):,.4f}")
    print (f"Units -> milliseconds: {timer.elapsed('ms'):,.4f}")
    # Deliberately use break case here, should default to seconds
    print (f"Units -> seconds: {timer.elapsed('asdf'):,.4f}")
