@@ -1,4 +1,4 @@
-#!/usr/bin/python
+﻿#!/usr/bin/python
 
 # Karim Sultan May 2020
 # Timer class - acts as performance stopwatch.
@@ -44,7 +44,7 @@ class Timer():
          self.__timeStop=perf_counter()
          self.__running=False
 
-   def elapsed(self, unit="s"):
+   def __convertUnits(self, delta, unit):
       # Acceptable units
       units={"ns": -3, "nano":-3, "nanoseconds":-3, "µs": -2, "micro":-2, "microseconds": -2, "ms":-1,"millis":-1, "milliseconds":-1, 
              "s":0, "sec":0, "seconds":0, "m":1, "min":1, "minutes":1, "h":2, "hrs":2, "hours":2, "d":3, "days":3}
@@ -53,20 +53,11 @@ class Timer():
       if (not unit in units.keys()):
          unit="s"
          
-      # Stop if not stopped
-      if (self.isRunning):
-         self.stop()
-
-      # Sanity on stop without start
-      if (self.__timeStart==0):
-         return(0)
-
       # Calculates units
-      self.__timeElapsed = self.__timeStop - self.__timeStart
-      nanoseconds=self.__timeElapsed*1000*1000*1000
-      microseconds=self.__timeElapsed*1000*1000
-      milliseconds = self.__timeElapsed*1000
-      minutes = self.__timeElapsed / 60
+      nanoseconds=delta*1000*1000*1000
+      microseconds=delta*1000*1000
+      milliseconds = delta*1000
+      minutes = delta / 60
       hours = minutes / 60
       days = hours / 24
 
@@ -86,9 +77,24 @@ class Timer():
          value=self.__timeElapsed
       return (value)
 
-   def peek(self):
+   def elapsed(self, unit="s"):
+      # Stop if not stopped
+      if (self.isRunning):
+         self.stop()
+
+      # Sanity on stop without start
+      if (self.__timeStart==0):
+         return(0)
+      
+      # Calculate timer delta; then convert units to requested unit type
+      self.__timeElapsed = self.__timeStop - self.__timeStart
+      value=self.__convertUnits(self.__timeElapsed, unit)
+      return (value)
+
+   def peek(self, unit='s'):
       if (self.isRunning()):
-         return (perf_counter()-self.__timeStart)
+         value=self.__convertUnits((perf_counter()-self.__timeStart), unit)
+         return(value)
       else:
          return (0)
 
