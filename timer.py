@@ -13,6 +13,8 @@
 # KSU 201028 Added support for nanoseconds and microseconds in timer.elapsed().
 #            Updated unit test for elapsed time accordingly.
 #            NOTE: The µ utf-8 character in windows is ALT-230.
+# KSU 201103 Two steps forward one step back... units function broke peek().
+#            Unit tests caught error. Fixed.
 
 # Usage:
 # from timer import Timer
@@ -57,6 +59,7 @@ class Timer():
       nanoseconds=delta*1000*1000*1000
       microseconds=delta*1000*1000
       milliseconds = delta*1000
+      seconds=delta
       minutes = delta / 60
       hours = minutes / 60
       days = hours / 24
@@ -74,7 +77,7 @@ class Timer():
       elif units[unit]==3:
          value=days
       else:
-         value=self.__timeElapsed
+         value=seconds
       return (value)
 
    def elapsed(self, unit="s"):
