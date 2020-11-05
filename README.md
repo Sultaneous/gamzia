@@ -50,6 +50,12 @@ my_timer.stop()
 
 # Report seconds used to 4 decimal places
 print (f"Time taken: {my_timer.elapsed():.4f}")
+
+# Report microseconds; could also use unit=micros
+print (f"Time taken: {my_timer.elapsed("µs"):.2f}")
+
+# Report hours; could also use unit=h
+print (f"Time taken: {my_timer.elapsed("hours"):.2f}")
 ```
 
 #### Methods
@@ -58,8 +64,8 @@ print (f"Time taken: {my_timer.elapsed():.4f}")
 | Timer() | None | Class instance | Constructor |
 | start() | None | nothing | Starts the timer |
 | stop() | None | nothing | Stops the timer |
-| peek() | None | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time |
-| elapsed() | **Optional** unit=seconds; choices are "ms|s|m|h|d" or "milliseconds|seconds|minutes|hours|days" | Returns the final elapsed time in seconds, or in the requested unit type. | Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+| peek() | **Optional** unit=seconds; choices are "ns|µs|ms|s|m|h|d" or "nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days" | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time elapsed on timer |
+| elapsed() | **Optional** unit=seconds; choices are "ns|µs|ms|s|m|h|d" or "nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days" | Returns the final elapsed time in seconds, or in the requested unit type. | Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
 
 #### Misc
 
@@ -493,6 +499,8 @@ The reason BinaryTrees can take so long to insert is that they can become "unbal
 BinaryTrees contain data in TreeNode structures. TreeNodes consist of a key and a value.  The key is usually an integer ordinal, or a string label, while the value can be any data, including other complex objects (for example, you could have a tree of queues, which is known as a B-Tree).  To use the BinaryTree, one first creates a TreeNode, populates it, and then inserts it into the tree.  Usage examples are provided below.
 
 BinaryTrees can be traversed in four manners: inorder (sorted), reverse inorder (descending sorted), preorder (left biased) and postorder (right biased). An enumeration called **TRAVERSALS** is provided containing reference names for the traversal method used with the toString() method.
+
+**NOTE:** An advanced method of using BinaryTrees in Python is supported, in which multiple keys can reference the same data without duplicating the data.  This is a many:one relationship, and to do this, one must use the Datum class to store their data, and add the Datum object to the TreeNode for each key that is meant to refer to it.  This is facilitated with the **BinaryTree.insertManyKeys(keylist, datum)** method.
 
 #### Enumeration: Traversals
 
