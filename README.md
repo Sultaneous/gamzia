@@ -64,8 +64,8 @@ print (f"Time taken: {my_timer.elapsed("hours"):.2f}")
 | Timer() | None | Class instance | Constructor |
 | start() | None | nothing | Starts the timer |
 | stop() | None | nothing | Stops the timer |
-| peek() | **Optional** unit=seconds; choices are "ns|µs|ms|s|m|h|d" or "nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days" | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time elapsed on timer |
-| elapsed() | **Optional** unit=seconds; choices are "ns|µs|ms|s|m|h|d" or "nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days" | Returns the final elapsed time in seconds, or in the requested unit type. | Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
+| peek() | **Optional** unit=seconds; choices are "ns\|µs\|ms\|s\|m\|h\|d" or "nanoseconds\|microseconds\|milliseconds\|seconds\|minutes\|hours\|days" | Returns the current elapsed time in seconds without stopping the timer.  Returns 0 if timer hasn't been started. | Peeks at current time elapsed on timer |
+| elapsed() | **Optional** unit=seconds; choices are "ns\|µs\|ms\|s\|m\|h\|d" or "nanoseconds\|microseconds\|milliseconds\|seconds\|minutes\|hours\|days" | Returns the final elapsed time in seconds, or in the requested unit type. | Stops timer if it is still running. Use peek() to get time interval without stopping timer. |
 
 #### Misc
 
