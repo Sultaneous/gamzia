@@ -8,6 +8,16 @@
 # console scripts.
 #
 # KSU 201010 Added macro modes + test case.
+# KSU 210301 Added an ANSI enabled test for NT.  This is useful for NT if ANSI is enabled in a
+#            console terminal window.
+#            To enable ANSI in PowerShell under Windows 10, and Server 2012+:
+#            > Set-ItemProperty HKCU:\Console VirtualTerminalLevel -Type DWORD 1
+# https://stackoverflow.com/questions/51680709/colored-text-output-in-powershell-console-using-ansi-vt100-codes
+#
+# NOTE: Windows defaults to ANSI Colour OFF.  This module will attempt to check if NT's 
+# HKCU::\Console\VirtualTerminalLevel is set to 1; if so it will enable colours on NT; if not, it will
+# disable them. This is for cross-platform portability.
+
 #
 # To use this script in python:
 #
@@ -27,11 +37,29 @@
 # 1st:   c: color         b: background color           s: style
 # 2nd:   l: light         d: dark
 # rest:  color / style
+import winreg
 import os
 
+# Under Windows, checks for a registry key that indicates ANSI codes
+# are accepted.
+def isWinAnsiEnabled():
+   try:
+      Registry=winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+      Key=winreg.OpenKeyEx(Registry, "Console")
+      vtup=winreg.QueryValueEx(Key, "VirtualTerminalLevel")
+      if (vtup[0]==1):
+         return True
+      else:
+         return False
+   except e:
+      # Key does not exist
+      return False
+
+
 class Colours:
+
    # No support for ANSI in Windows, so disable.
-   if (os.name=="Windows" or os.name=="nt"):
+   if (os.name=="Windows" or os.name=="nt") and (not isWinAnsiEnabled()):
       # Foreground (Text) Colors
       cbl=""       # Color Black
       cdr=""       # Color Dark Red
