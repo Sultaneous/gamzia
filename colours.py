@@ -256,6 +256,8 @@ def doTest():
    if (C.clc==""):
       print ("This OS does not support ANSI colour in terminals.")
       print ("Test will execute, but output should be colourless.")
+      print ("Note that you can enable ANSI colours in Windows PowerShell with:")
+      print ("> Set-ItemProperty HKCU:\Console VirtualTerminalLevel -Type DWORD 1")
       print()
 
    print()
