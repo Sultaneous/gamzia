@@ -80,9 +80,9 @@ python timer.py
 
 ### <a id="info_colours">Colours</a>
 
-Colours provides ansi colour codes for formatting text strings with colour adornments. 
+Colours provides ANSI colour codes for formatting text strings with colour adornments. 
 
-**NOTE: In Windows 10, ANSI colour is NOT supported in DOS CMD nor PowerShell terminals, and therefore cannot be used. However, compatibility is kept by instead substituting empty strings ("") for the ANSI code, so coloured text strings will render properly under an ANSI Unix terminal but will not cluter / break a Windows terminal. Not all stlyes are supported by terminals; YMMV.**
+**NOTE: In Windows 10, ANSI colour is NOT supported in DOS CMD nor PowerShell terminals, and therefore cannot be used. However, compatibility is kept by instead substituting empty strings ("") for the ANSI code, so coloured text strings will render properly under an ANSI Unix terminal but will not clutter / break a Windows terminal. Not all styles are supported by terminals; YMMV.**
 
 Colours are identified with a 3-4 letter foreground code (cxx), background code (bxx), or style code (sxx).  Colours can be turned off (reverting to terminal default) with "coff" (Colour OFF), "boff" (Background OFF), the generic "off" (foreground & background off). Styles need to be turned off individually.
 
@@ -198,7 +198,7 @@ python colours.py
 
 ...will execute the Colours unit test cases.
 
-##### Example of Foreground, Backgrouns Colour Combinations:
+##### Example of Foreground, Background Colour Combinations:
 
 ![Colour Grid](http://www.gamzia.com/assets/images/other/colour_grid.png "Colour Grid")
 
@@ -209,11 +209,11 @@ python colours.py
 The AccountManager class is intended to provide a simple way to incorporate authentication into an app. For example, in a client-server paradigm,
 a login may be required prior to providing services.  Account management is a repetitive pattern that is covered with this class.
 
-The programmer can quickly incorporate a user database with salted hash passwords.  For security reasons, the actual or "plain-text" pasword is not
+The programmer can quickly incorporate a user database with salted hash passwords.  For security reasons, the actual or "plain-text" password is not
 stored. Instead, the SHA256 secure hash algorithm is used to create a hash, which is formed from the input of the user name (the salt) and the password.
 This hash is stored in the database, and for future comparisons, the salted hash is first recreated and then the hashes are compared.
 
-AccountManager uses an sqlite database, which is a local binary file.  Quesries employ the use of parameterization to harden it against SQL injection
+AccountManager uses an sqlite database, which is a local binary file.  Queries employ the use of parameterization to harden it against SQL injection
 attacks.  The programmer provides the database name, hence a database can be isolated to a single app or shared among several apps.
 
 The **sqlite3 library** must be installed first to use this class:
@@ -269,11 +269,11 @@ level as part of the schema.  User name cannot be NULL.  Password cannot be NULL
 | addUser() | string user name; string password | True on success, False otherwise | Adds a new user record with salted, hashed password to database. |
 | listUsers() | **None** | Returns a list of tuples, where each tuple is the equivalent of 1 record from the accounts table. | The fields in a record are ID (integer), Username (String), Password (String) and CreationDate (String, date/time format).  If the table is empty, an empty list is returned. |
 | getUser() | string user name | Returns a tuple containing the complete user record, or **None** if no record found. | Always check for **None** in case user wasn't in the db. This can be avoided with a call to doesUserExist() before calling getUser(). |
-| getPassword() | string user name | Returns the passsword entry for the specified user, or **None** if user not found. |  Password value is the salted, SHA256 hash value of the original password. Plain-text passwords are not stored.  Passwords are salted with the User name (the salt value is not secret). |
+| getPassword() | string user name | Returns the password entry for the specified user, or **None** if user not found. |  Password value is the salted, SHA256 hash value of the original password. Plain-text passwords are not stored.  Passwords are salted with the User name (the salt value is not secret). |
 | updatePassword() | string user name, string newpassword | True on success, False otherwise. | **NOTE** The class will salt and hash the password, so you need only provide the plain-text version of the password to this method. |
 | deleteUser() | string user name | True if successful, False otherwise | Deletes user from database.  **NOTE** If user doesn't exist, it returns False as nothing was deleted. Again, the programmer can avoid ambiguity on the meaning of a False return value (ie, user didn't exist, or DB error occurred) by first calling doesUserExist(). |
 | verifyPassword() | string user name, string value to test | Returns True if user's salted hash password value matches the value provided, False if not. | **NOTE** This requires that the value you test is the salted pasword hash and not the plain text password.  See saltPassword() below for how to do this, and see the usage examples above for a code example. |
-| **Static** AccountManager.saltPassword() | string user name, string plain-text password | Returns a string containing the salted, SHA256 password hash | **NOTE** This is a staticmethod that can be used anytime without a class instance.  The user name is required, as it is the salt value that is used (the salt value is not secret).|
+| **Static** AccountManager.saltPassword() | string user name, string plain-text password | Returns a string containing the salted, SHA256 password hash | **NOTE** This is a static method that can be used anytime without a class instance.  The user name is required, as it is the salt value that is used (the salt value is not secret).|
 
 #### Misc
 
@@ -288,9 +288,9 @@ python accountmanager.py
 
 ### <a id="info_datastructures">Data Structures</a>
 
-The Data Structure module contains mulitple classes representing basic computer science data structures. You can easily add a stack to your programs, for example, using this module. Please see the usage examples below along with the method reference for more details.  Examples of using these data structures can be found in the module's unit tests.
+The Data Structure module contains multiple classes representing basic computer science data structures. You can easily add a stack to your programs, for example, using this module. Please see the usage examples below along with the method reference for more details.  Examples of using these data structures can be found in the module's unit tests.
 
-Currently supported data structures include **[Stack](#info_stack) (LIFO), [Queue](#info_queue) (FIFO), and [BinaryTree](#info_binarytree)**.  More structures, such as AVL Trees and Priority Queues (Heaps) are intended.
+Currently supported data structures include **[Stack](#info_stack) (LIFO), [Queue](#info_queue) (FIFO), and [BinaryTree](#info_binarytree)**.  More structures, such as AVL Trees, Red/Black Trees, and Priority Queues (Heaps) are intended.
 
 #### Usage examples:
 ``` python
@@ -309,7 +309,7 @@ Further usage examples are provided per class below.
 ---
 ### <a id="info_stack">Stack</a>
 
-Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location wihout removing it (pop is always destructive).  Stacks are ordered by the order of element entry, and unsorted.
+Stacks work like piles; you "push" an element onto the stack and it goes on the top of the pile.  You can "pop" an element off of the stack and it will return the element at the top, while at the same time removing it from the stack. This creates a last-in, first-out structure (**LIFO**).  You can "peek" at the top of the stack, or the "bottom" of the stack, which in both cases returns the element at that location without removing it (pop is always destructive).  Stacks are ordered by the order of element entry, and unsorted.
 
 **Note** The Stack class supports the str() and len() commands. The Stack class supports iteration, returning the top data item each iteration, until the stack is empty. This type of iteration is destructive. If you want to preserve the stack, please make a copy via **stack.copy()** first.
 
@@ -349,7 +349,7 @@ print (len(stack))
 | peek() | look(), see(), top(), last() | None | The top element of the stack, or None if stack is empty | Returns the top stack element, without removing it, if there is one. |
 | bottom() | first() | None | The last element of the stack, or None if stack is empty | Non-destructive. It's like peek for the bottom, or first, element. |
 | size() | length() | None | The integer count of elements in the stack | Determines the size of the stack in elements. |
-| toString() | None | **optional** topdown=True | A string representation of the stack, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; it is a boolean with the default being True (print from the top to the bottom). |
+| toString() | None | **optional** topdown=True | A string representation of the stack, when possible. | Converts all elements to string and lists them.  Won't work when elements are complex objects. The optional parameter topdown represents the order of rendering; it is a boolean with the default being **True** (print from the top to the bottom). |
 
 #### Examples
 
@@ -402,7 +402,7 @@ python datastructures.py
 
 ### <a id="info_queue">Queue</a>
 
-Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" and element, which removes the first element (head) in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the head of the queue, or the tail element of the queue, which in both cases returns the element at that location wihout removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and are unsorted.
+Queues are lines; picture a queue as a linear buffer. When you "enqueue" and element, it enters the line at the next available position.  You can "dequeue" an element, which removes the first element (head) in the queue and returns it.  This creates a first-in, first-out structure (**FIFO**).  You can "peek" at the head of the queue, or the tail element of the queue, which in both cases returns the element at that location without removing it ("dequeue" is always destructive).  Queues are ordered by the order of element entry, and are unsorted.
 
 Whereas Stacks have a "top to bottom" (up/down) organization, a queue has a "head to tail" or "front to back" (left/right) orientation.
 
@@ -411,7 +411,7 @@ Whereas Stacks have a "top to bottom" (up/down) organization, a queue has a "hea
 ``` python
 # Iteration example
 queue = Queue()
-queue.enqueue ("Alligattor")
+queue.enqueue ("Alligator")
 queue.enqueue ("Bear")
 queue.enqueue ("Cat")
 
@@ -498,7 +498,7 @@ The reason BinaryTrees can take so long to insert is that they can become "unbal
 
 BinaryTrees contain data in TreeNode structures. TreeNodes consist of a key and a value.  The key is usually an integer ordinal, or a string label, while the value can be any data, including other complex objects (for example, you could have a tree of queues, which is known as a B-Tree).  To use the BinaryTree, one first creates a TreeNode, populates it, and then inserts it into the tree.  Usage examples are provided below.
 
-BinaryTrees can be traversed in four manners: inorder (sorted), reverse inorder (descending sorted), preorder (left biased) and postorder (right biased). An enumeration called **TRAVERSALS** is provided containing reference names for the traversal method used with the toString() method.
+BinaryTrees can be traversed in four manners: inorder (ascending sorted), reverse inorder (descending sorted), preorder (left biased) and postorder (right biased). An enumeration called **TRAVERSALS** is provided containing reference names for the traversal method used with the toString() method.
 
 **NOTE:** An advanced method of using BinaryTrees in Python is supported, in which multiple keys can reference the same data without duplicating the data.  This is a many:one relationship, and to do this, one must use the Datum class to store their data, and add the Datum object to the TreeNode for each key that is meant to refer to it.  This is facilitated with the **BinaryTree.insertManyKeys(keylist, datum)** method.
 
@@ -525,7 +525,7 @@ for i in range(20):
 for key in tree.traverse(TRAVERSALS.INORDER):
    node=tree.search(key)
    
-   # There is no data in node, but this is how you would access it ift there were
+   # There is no data in our node, but this is how you would access it if there were
    print(f"Node key: {node.key}  |  Node data: {node.data})
    
 # Prove it was non-destructive:
@@ -557,7 +557,7 @@ The Key-Data combination is a dictionary pattern, same as a key-value pair.
 
 ##### Not Implemented:
   * delete()  
-  Delete is a precarious operation in trees.  It can unbalance them, and can take significant  time to complete.  Most of the litterature recommends avoiding deletes or using a lazy delete style.  Ideally, the delete would both remove the node, chain the parent node with children nodes, and then rebalance the tree.  Also, some initial testing showed issues with Python not freeing up deleted nodes if a reference was left to them, so it must be implemented cautiously. **FUTURE IMPLEMENTATION**
+  Delete is a precarious operation in trees.  It can unbalance them, and can take significant  time to complete.  Most of the literature recommends avoiding deletes or using a lazy delete style.  Ideally, the delete would both remove the node, chain the parent node with children nodes, and then rebalance the tree.  Also, some initial testing showed issues with Python not freeing up deleted nodes if a reference was left to them, so it must be implemented cautiously. **FUTURE IMPLEMENTATION**
   * getHeight()  
   Only has a partial implementation. Returns a tuple of (left height, right height) from the root node.  Do not rely on this method!  The current implementation is incomplete; it calculates the height of the extreme left branch and the extreme right branch, but nested children may extend the height to deeper levels and they are currently ignored.  **FUTURE IMPLEMENTATION**
   * clear()  
@@ -575,7 +575,7 @@ The Key-Data combination is a dictionary pattern, same as a key-value pair.
 
 #### Examples
 
-Example of creating a binary tree, isnerting 4 nodes (keys with data) into it, finding and updating them.
+Example of creating a binary tree, inserting 4 nodes (keys with data) into it, finding and updating them.
 ``` python
 from gamzia.datastructures import BinaryTree, TreeNode, TRAVERSALS
 
@@ -598,7 +598,7 @@ bst.insert(tnode)
 # Display current bst tree, sorted ascending (TRAVERSALS.INORDER is the default)
 print ("Binary Tree:",bst.toString())
 
-# Display current bst tree, sorted descending
+# Display current BST tree, sorted descending
 print ("Binary Tree:",bst.toString(traversal=TRAVERSALS.REVERSE))
 
 # Get the size
@@ -639,11 +639,11 @@ python datastructures.py
 
 ## <a id="info_filedescriptor">FileDescriptor</a>
 
-The FileDescriptor class was a purpose built class for implementation of the [FBomb](https://www.github.com/Sultaneous/fbomb) file-transfer protocol.  However, when building clients and servers supportring FBomb, it became useful to break out FileDescriptor as a generic class for quick adoption.
+The FileDescriptor class was a purpose built class for implementation of the [FBomb](https://www.github.com/Sultaneous/fbomb) file-transfer protocol.  However, when building clients and servers supporting FBomb, it became useful to break out FileDescriptor as a generic class for quick adoption.
 
 FileDescriptor assembles important metadata about a particular file in the file system. It is quickly transformed into a simple JSON representation, and the serialized JSON is easily sent over the network between client and server.  The same logic was replicated in C# to produce a C# FBomb client which seamlessly communicates with a Python based FBomb server.
 
-To create the JSON object, first the class fields are populated, afterwhich reflection is used to extract the public value attributes and create a dictionary. Python's JSON library handles dictionaries quite well, and outputs the JSON string.  Deserialization is done via a static factory method, which converts the JSON representation back to a dictionary and then dynamically populates a new FileDescriptor instance with the values (again, using reflection style techniques).
+To create the JSON object, first the class fields are populated, after which reflection is used to extract the public value attributes and create a dictionary. Python's JSON library handles dictionaries quite well, and outputs the JSON string.  Deserialization is done via a static factory method, which converts the JSON representation back to a dictionary and then dynamically populates a new FileDescriptor instance with the values (again, using reflection style techniques).
 
 #### Usage examples:
 ``` python
@@ -718,6 +718,6 @@ Running the following:
 python filedescriptor.py
 ```
 
-...will execute the FileDescripor unit test cases.
+...will execute the FileDescriptor unit test cases.
 
 ***
