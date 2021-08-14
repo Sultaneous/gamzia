@@ -21,14 +21,18 @@ from datastructures import Stack, Queue
 # and not the American PEMDAS rule - although the outcomes are
 # necessarily the same under either rule, there is an implemntation
 # difference).  NOTE: Current implementation doesn't care - uses both.
-# rolls dice on a 'd' operator (ie, to roll a 6 sided die, use 1d6),
+# rolls dice on a 'd' operator (ie, to roll a 6 sided die once, use 1d6)
 # and optionally can create a histogram with mean, mode, and 
 # frequency chart.
+
+# KSU 210814 Added '!' (factorial) operator; precedence is debatable,
+# since it isn't in the BEDMAS rule, but mathematicians peg it between
+# brackets and exponents.
 class DiceResolver:
    def __init__(self):
       
-      # BEDMAS ==> d()^/%*+-
-      # PEMDAS ==> d()^*/%+-
+      # BEDMAS ==> d()!^/%*+-
+      # PEMDAS ==> d()!^*/%+-
       # Precedence weighting reflects rule; higher means priority
       # Close bracket ')' not included; it is a special case (collapses stack to '(')
       self.precedence = {
@@ -39,6 +43,7 @@ class DiceResolver:
          "*": 5,
          "%": 5,
          "^": 7,
+         "!": 8,
          "d": 9
       }
       
@@ -121,7 +126,22 @@ class DiceResolver:
       for c in q_cp:
          rpn+=c+" "
       return (rpn)
-      
+
+   # Routine to calculate a factorial
+   def factorial(self, value):
+      if (value<0):
+         return (0)
+      elif (value==0 or value==1):
+         return (1)
+      elif (value==2):
+         return (2)
+
+      product=value;
+
+      for x in range(2, value):
+         product = product * x
+      return(product)
+         
 
    # Given left value, right value, and an operator, calculate.
    def calculate(self, left, right, op):   
@@ -141,7 +161,10 @@ class DiceResolver:
          return (left**right)
 
       elif (op == "%"):
-         return (left % right);
+         return (left % right)
+
+      elif (op == "!"):
+         return (self.factorial(right))
 
       # dice roll; handled with 'random'
       # NOTE: expressions without 'd' are deterministic;
@@ -176,10 +199,14 @@ class DiceResolver:
                 break
 
             # Now get left value, validate
-            left=workstack.pop()
-            if (not str(left).isnumeric() and not left in self.precedence):
-                self.error=True
-                break
+            # Special case: ! only takes one argument. Make them identical
+            if (t=="!"):
+               left=right
+            else:
+               left=workstack.pop()
+               if (not str(left).isnumeric() and not left in self.precedence):
+                   self.error=True
+                   break
 
             # Both valid, so calculate
             workstack.push(self.calculate(left, right, t))
