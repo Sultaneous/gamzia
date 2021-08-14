@@ -1,5 +1,5 @@
 import random
-from gamzia.datastructures import Stack, Queue
+from datastructures import Stack, Queue
 
 # Karim Sultan 2021 08 12
 # Adapted from C# version, DiceResolver.cs by Karim Sultan, 2019.
@@ -26,6 +26,7 @@ from gamzia.datastructures import Stack, Queue
 # frequency chart.
 class DiceResolver:
    def __init__(self):
+      
       # BEDMAS ==> d()^/%*+-
       # PEMDAS ==> d()^*/%+-
       # Precedence weighting reflects rule; higher means priority
@@ -48,12 +49,18 @@ class DiceResolver:
       self.q = Queue()
       self.error = False
 
-   # Converts a valid infix expression (mathematical expression) to postfix using
-   # Reverse Polish Notation (RPN).  Infix expression must be valid; this function
-   # can not check validity.  Note that by design, this only supports integer
-   # expression (no floating point support).  FP support can be added if while building
-   # numbers, the '.' character is accepted.
+   # Converts a valid infix expression (mathematical expression)
+   # to postfix using Reverse Polish Notation (RPN). Infix exp-
+   # ression must be valid; this function can not check validi-
+   # ty.  Note that by design, this only supports integer expr-
+   # ession (no floating point support). FP support can be add-
+   # ed if while building numbers, the '.' character is accepted.
+
+   # Example: Expression="1 + 2 * 3"  --> 7, NOT 9
+   # RPN="1 2 3 * +"  --> 7
+   # Note that the order of operations is preserved in the RPN.
    def infixToRPN(self, expression):
+      
       # Since a number may be multiple characters, we start with an empty string,
       # and while each character is numeric, we append the number until a non-
       # numeric value is encountered.
@@ -105,10 +112,18 @@ class DiceResolver:
       while (self.s.size() != 0):
          self.q.enqueue(self.s.pop())
          
-      # At this point, we have a valid RPN in the 'q' queue (if the infix expression was valid)
+      # At this point, we have a valid RPN in the 'q' queue
+      # (if the infix expression was valid)
+      # Let's return a string version:
+      q_cp = self.q.copy()
+
+      rpn=""
+      for c in q_cp:
+         rpn+=c+" "
+      return (rpn)
       
 
-
+   # Given left value, right value, and an operator, calculate.
    def calculate(self, left, right, op):   
       if (op == "+"):
          return (left + right)
@@ -128,10 +143,15 @@ class DiceResolver:
       elif (op == "%"):
          return (left % right);
 
-      # dice roll
+      # dice roll; handled with 'random'
+      # NOTE: expressions without 'd' are deterministic;
+      # expressions with 'd' are non-deterministic (variable
+      # outcomes).
       elif (op == "d"):
          sum = 0;
 
+         # Left value is number of rolls; right value is die
+         # IE 3d6 = 3 rolls of a 6 sided die, summed.
          for i in range(left):
             sum+=random.randint(1, right);
          return (sum);
@@ -139,6 +159,9 @@ class DiceResolver:
       # whoops shouldn't have happened try to be graceful
       return (0);
 
+
+   # Nifty little stack and queue algorithm for evaluating
+   # the RPN.  Expects a valid RPN expression.
    def evaluateRPN(self):
       workstack=Stack()
 
@@ -146,17 +169,19 @@ class DiceResolver:
       # nor an operator, we abort with an error.
       for t in self.q:
          if (t in self.precedence):
+            # As we work backwards, right value is first; validate
             right=workstack.pop()
             if (not str(right).isnumeric() and not right in self.precedence):
-                print(f"Error {right} is invalid token.")
                 self.error=True
                 break
 
+            # Now get left value, validate
             left=workstack.pop()
             if (not str(left).isnumeric() and not left in self.precedence):
                 self.error=True
                 break
-               
+
+            # Both valid, so calculate
             workstack.push(self.calculate(left, right, t))
          else:
             workstack.push(int(t))
@@ -168,6 +193,7 @@ class DiceResolver:
          return (0)
 
 
+   # One function to handle it all. How Pythonic.
    def resolve(self, expression):
       self.error=False
       self.q.clear()
@@ -176,6 +202,8 @@ class DiceResolver:
       return (self.evaluateRPN())
    
 
+# Integrated, interactive testing of module.
+# Run module to access this function.
 def test():
    dice = DiceResolver()
    p=""
@@ -184,13 +212,14 @@ def test():
       if x=="q" or x=='Q':
          break
       if (x!=""):
-         p=x         
-      print(dice.resolve(p))
+         p=x
+      print("RPN:    ",dice.infixToRPN(p))
+      print("ANSWER: ",dice.resolve(p))
    return
 
 # Interactive testing
-#if __name__ == "__main__":
-#   test()
+if __name__ == "__main__":
+   test()
 
 
 
