@@ -28,6 +28,9 @@ from datastructures import Stack, Queue
 # KSU 210814 Added '!' (factorial) operator; precedence is debatable,
 # since it isn't in the BEDMAS rule, but mathematicians peg it between
 # brackets and exponents.
+
+# KSU 210814 Added "C" for choose (combinatorics).
+# Set the priority to same as multiplication (via formula expansion).
 class DiceResolver:
    def __init__(self):
       
@@ -42,6 +45,8 @@ class DiceResolver:
          "/": 5,
          "*": 5,
          "%": 5,
+         "C": 5,
+         "c": 5,
          "^": 7,
          "!": 8,
          "d": 9
@@ -127,6 +132,7 @@ class DiceResolver:
          rpn+=c+" "
       return (rpn)
 
+
    # Routine to calculate a factorial
    def factorial(self, value):
       if (value<0):
@@ -141,6 +147,23 @@ class DiceResolver:
       for x in range(2, value):
          product = product * x
       return(product)
+
+
+   # Routine to calculate "choose" (combinatorics)
+   # Formula:
+   # nCr (n Choose r) = n! / r!(n-r)!
+   def choose(self, n, r):
+      numerator=self.factorial(n)
+      denominator=self.factorial(r)*self.factorial(n-r)
+
+      # Sanity
+      if (denominator==0):
+         return (0)
+
+      # Compute
+      # NOTE: Should always be an integer result, but cast
+      # it anyways to be safe
+      return (int(numerator/denominator))
          
 
    # Given left value, right value, and an operator, calculate.
@@ -164,7 +187,10 @@ class DiceResolver:
          return (left % right)
 
       elif (op == "!"):
-         return (self.factorial(right))
+         return (self.factorial(left))
+
+      elif (op == "c" or op == "C"):
+         return (self.choose(left, right))
 
       # dice roll; handled with 'random'
       # NOTE: expressions without 'd' are deterministic;
