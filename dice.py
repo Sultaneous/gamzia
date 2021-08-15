@@ -274,5 +274,68 @@ def test():
 if __name__ == "__main__":
    test()
 
+# NOTE: TO BE CONVERTED
+##public Dictionary<Int64, Int64> getHistogram(Int64 firstRoll, Int64 trials)
+##{
+##   // Validate
+##   if (trials < 0)
+##      trials = 1;
+##   else if (trials > 1000000)
+##      trials = 1000000;
+##
+##   // Init
+##   StringBuilder sb = new StringBuilder();
+##   Dictionary<Int64, Int64> rolls = new Dictionary<Int64, Int64>();  // Roll, Frequency
+##   Int64 roll, sum;
+##   double[] max = new double[2];
+##   double pct;
+##
+##   // Build
+##   for (int i = 0; i < trials; i++)
+##   {
+##      roll = this.resolve();
+##
+##      // Ensures first roll is included in histogram as they are
+##      // otherwise unrelated.
+##      if (i == 0) roll = firstRoll;
+##      if (rolls.ContainsKey(roll))
+##         rolls[roll] += 1;
+##      else
+##         rolls[roll] = 1;
+##   }
+##
+##   // Sort
+##   var list = rolls.Keys.ToList<Int64>();
+##   list.Sort();
+##
+##   // Report
+##   sb.Clear();
+##   sum = 0;
+##   max[0] = max[1] = 0;
+##   Dictionary<Int64, Int64> result = new Dictionary<Int64, Int64>();
+##   foreach (Int64 key in list)
+##   {
+##      result[key] = rolls[key];
+##      sum += key * rolls[key];
+##      pct = (double)rolls[key] / (double)trials * 100f;
+##      if (pct > max[0])
+##      {
+##         max[0] = pct;
+##         max[1] = key;
+##      }
+##      sb.Append("[");
+##      sb.Append(key);
+##      sb.Append("] ==> ");
+##      sb.Append(rolls[key].ToString("n0") + " ");
+##      sb.Append("(" + pct.ToString("f2") + "%), ");
+##   }
+##   this.mean = (Int64)((double)sum / (double)trials + 0.5);
+##   this.mode = (Int64)max[1];
+##   string s = sb.ToString();
+##   if (s.EndsWith(", "))
+##      s = s.Substring(0, s.Length - 2);
+##
+##   return (result);
+##}
 
 
