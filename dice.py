@@ -31,6 +31,9 @@ from datastructures import Stack, Queue
 
 # KSU 210814 Added "C" for choose (combinatorics).
 # Set the priority to same as multiplication (via formula expansion).
+
+# KSU 210816 Added getHistogram() which provides a heuristic analysis
+# of a particular dice roll.
 class DiceResolver:
    def __init__(self):
       
@@ -45,7 +48,7 @@ class DiceResolver:
          "/": 5,
          "*": 5,
          "%": 5,
-         "C": 5,
+        "C": 5,
          "c": 5,
          "^": 7,
          "!": 8,
@@ -110,7 +113,7 @@ class DiceResolver:
             self.s.push(token)
 
          # Case: character is numeric.
-         # Append to accumulator and continue parsing
+        # Append to accumulator and continue parsing
          elif (token.isnumeric()):
             num += token
 
@@ -216,7 +219,7 @@ class DiceResolver:
 
       # As we pull tokens from the queue, we validate them and if neither a number
       # nor an operator, we abort with an error.
-      for t in self.q:
+      for t in self.q.copy():
          if (t in self.precedence):
             # As we work backwards, right value is first; validate
             right=workstack.pop()
@@ -247,13 +250,92 @@ class DiceResolver:
 
 
    # One function to handle it all. How Pythonic.
-   def resolve(self, expression):
-      self.error=False
-      self.q.clear()
-      self.s.clear()
-      self.infixToRPN(expression)
-      return (self.evaluateRPN())
-   
+   def resolve(self, expression, repeat=False):
+      if not repeat:
+         self.error=False
+         self.q.clear()
+         self.s.clear()
+         self.infixToRPN(expression)
+         return (self.evaluateRPN())
+      else:
+         # Repeat=True
+         # This allows repeat dice rolls / calculations, without rebuilding
+         # the RPN queue each time.
+         return (self.evaluateRPN())
+
+   # Heuristic to calculate expression distribution, ment to be
+   # used with dice rolls (ie, 2d6).  This is done by repeating rolls
+   # to a cap of n trials, then assessing the results.
+   # Returns a histogram report with trial results, mean and mode.
+   def getHistogram(self, expression, trials):
+      # Validate min/max boundaries
+      if (trials<0):
+         trials = 1
+      elif (trials > 1000000):
+         trials=1000000
+
+      # Initialize
+      sb = ""
+      rolls = dict()
+      sum=0
+      pct=1.0
+      max=dict()
+      result=dict()
+
+      # Build
+      for i in range(trials):
+         if i==0:
+            roll=self.resolve(expression);
+         else:
+            # We already built the RPN, don't waste cycles
+            # reuilding it on every iteration, set repeat=True.
+            roll=self.resolve(expression, repeat=True)
+
+         # Track the recurrences of roll values
+         if (roll in rolls.keys()):
+            rolls[roll] += 1
+         else:
+            rolls[roll]= 1
+
+      # Nifty way to build a key sorted report
+      keys = list(rolls.keys())
+      keys.sort()
+
+      # Report
+      sb=f"DISTRIBUTION HISTORGRAM ({trials:,} trials):\n"
+      max[0]=max[1]=0
+      for key in keys:
+         result[key] = rolls[key]
+         sum += key * rolls[key]
+         pct = float(rolls[key])/float(trials,)*100.0
+         if (pct > max[0]):
+            max[0] = pct
+            max[1] = key
+         
+         sb+=f"[{key:3}] ==> {rolls[key]:,} ({pct:.2f}%)\n"
+
+         # Stash pct for later
+         rolls[key]=pct
+
+      mean=float(sum)/float(trials) + 0.5
+      sb+=f"Mean: {mean:.2f}\n"
+      mode=max[1]
+      sb+=f"Mode: {mode}\n\n"
+
+      # Scaling calculation uses a lambda function
+      scale = lambda x,y: int(float(x/100)*float(y)+0.5)
+      
+      # Build histogram pictogragh
+      pic = "PICTORIAL HISTOGRAM:\n"
+      for key in keys:
+         pic += f"[{key:3}] "
+         for i in range(scale(rolls[key],160)):
+            pic += "*"
+         pic+="\n"
+                        
+      # Send back the report
+      return (sb+pic)
+  
 
 # Integrated, interactive testing of module.
 # Run module to access this function.
@@ -268,74 +350,10 @@ def test():
          p=x
       print("RPN:    ",dice.infixToRPN(p))
       print("ANSWER: ",dice.resolve(p))
+      print(dice.getHistogram(p, 50000))
    return
 
 # Interactive testing
 if __name__ == "__main__":
    test()
-
-# NOTE: TO BE CONVERTED
-##public Dictionary<Int64, Int64> getHistogram(Int64 firstRoll, Int64 trials)
-##{
-##   // Validate
-##   if (trials < 0)
-##      trials = 1;
-##   else if (trials > 1000000)
-##      trials = 1000000;
-##
-##   // Init
-##   StringBuilder sb = new StringBuilder();
-##   Dictionary<Int64, Int64> rolls = new Dictionary<Int64, Int64>();  // Roll, Frequency
-##   Int64 roll, sum;
-##   double[] max = new double[2];
-##   double pct;
-##
-##   // Build
-##   for (int i = 0; i < trials; i++)
-##   {
-##      roll = this.resolve();
-##
-##      // Ensures first roll is included in histogram as they are
-##      // otherwise unrelated.
-##      if (i == 0) roll = firstRoll;
-##      if (rolls.ContainsKey(roll))
-##         rolls[roll] += 1;
-##      else
-##         rolls[roll] = 1;
-##   }
-##
-##   // Sort
-##   var list = rolls.Keys.ToList<Int64>();
-##   list.Sort();
-##
-##   // Report
-##   sb.Clear();
-##   sum = 0;
-##   max[0] = max[1] = 0;
-##   Dictionary<Int64, Int64> result = new Dictionary<Int64, Int64>();
-##   foreach (Int64 key in list)
-##   {
-##      result[key] = rolls[key];
-##      sum += key * rolls[key];
-##      pct = (double)rolls[key] / (double)trials * 100f;
-##      if (pct > max[0])
-##      {
-##         max[0] = pct;
-##         max[1] = key;
-##      }
-##      sb.Append("[");
-##      sb.Append(key);
-##      sb.Append("] ==> ");
-##      sb.Append(rolls[key].ToString("n0") + " ");
-##      sb.Append("(" + pct.ToString("f2") + "%), ");
-##   }
-##   this.mean = (Int64)((double)sum / (double)trials + 0.5);
-##   this.mode = (Int64)max[1];
-##   string s = sb.ToString();
-##   if (s.EndsWith(", "))
-##      s = s.Substring(0, s.Length - 2);
-##
-##   return (result);
-##}
-
 
