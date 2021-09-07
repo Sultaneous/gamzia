@@ -257,8 +257,11 @@ def doTest():
       print ("This OS does not support ANSI colour in terminals.")
       print ("Test will execute, but output should be colourless.")
       print ("Note that you can enable ANSI colours in Windows PowerShell with:")
+      print ()
       print ("> Set-ItemProperty HKCU:\Console VirtualTerminalLevel -Type DWORD 1")
-      print()
+      print ()
+      print ("(and then close/reopen your console, PowerShell or DOS window)"
+      print ()
 
    print()
    print (f"{C.sre}Foreground Colour Test:{C.sref} ", end='')
