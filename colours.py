@@ -260,7 +260,7 @@ def doTest():
       print ()
       print ("> Set-ItemProperty HKCU:\Console VirtualTerminalLevel -Type DWORD 1")
       print ()
-      print ("(and then close/reopen your console, PowerShell or DOS window)"
+      print ("(and then close/reopen your console, PowerShell or DOS window)")
       print ()
 
    print()
