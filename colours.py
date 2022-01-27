@@ -214,7 +214,7 @@ class Colours:
    listsall = [f"{sbo}", f"{sdi}", f"{sun}", f"{sbl}", f"{sre}", f"{shi}",
    f"{sbof}", f"{sdif}", f"{sunf}", f"{sblf}", f"{sref}", f"{shif}"]
 
-   listmall = [f"{no}", f"{yes}", f"{old}", f"{retro}", f"{paper}", f"{off}"]
+   listmall = [f"'NO': {no}", f"'YES': {yes}", f"'OLD': {old}", f"'RETRO': {retro}", f"'PAPER': {paper}", f"{off}"]
 
    # Static method to remove colour codes from a formatted string
    # This could probably be done more compactly with a regex, but this way
