@@ -316,7 +316,7 @@ Stacks work like piles; you "push" an element onto the stack and it goes on the 
 ``` python
 # Iteration example
 stack = Stack()
-stack.push ("Alligattor")
+stack.push ("Alligator")
 stack.push ("Bear")
 stack.push ("Cat")
 
