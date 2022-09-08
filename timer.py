@@ -15,6 +15,8 @@
 #            NOTE: The µ utf-8 character in windows is ALT-230.
 # KSU 201103 Two steps forward one step back... units function broke peek().
 #            Unit tests caught error. Fixed.
+# KSU 220908 Changed pluralizaion of "millis" to "milli" in __convertUnits, to
+#            make it line up with the singularization of prefixes.
 
 # Usage:
 # from timer import Timer
@@ -48,7 +50,7 @@ class Timer():
 
    def __convertUnits(self, delta, unit):
       # Acceptable units
-      units={"ns": -3, "nano":-3, "nanoseconds":-3, "µs": -2, "micro":-2, "microseconds": -2, "ms":-1,"millis":-1, "milliseconds":-1, 
+      units={"ns": -3, "nano":-3, "nanoseconds":-3, "µs": -2, "micro":-2, "microseconds": -2, "ms":-1,"milli":-1, "milliseconds":-1, 
              "s":0, "sec":0, "seconds":0, "m":1, "min":1, "minutes":1, "h":2, "hrs":2, "hours":2, "d":3, "days":3}
 
       # Sanity
