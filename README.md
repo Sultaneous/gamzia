@@ -200,7 +200,7 @@ python colours.py
 
 ##### Example of Foreground, Background Colour Combinations:
 
-![Colour Grid](http://www.gamzia.com/assets/images/other/colour_grid.png "Colour Grid")
+![Colour Grid](https://github.com/Sultaneous/gamziatools/blob/main/docs/colour_list.png)
 
 ***
 
