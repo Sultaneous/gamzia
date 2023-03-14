@@ -88,7 +88,7 @@ Colours are identified with a 3-4 letter foreground code (cxx), background code 
 
 **NOTE:** ANSI colouring supports **16 colours** as listed below:
 
-![Colour List](http://www.gamzia.com/assets/images/other/colour_list.png "Colour Grid")
+![Colour List](https://github.com/Sultaneous/gamziatools/blob/main/docs/colour_list.png)
 
 **NOTE:** You can have 1 active foreground colour, 1 active background colour, and multiple active styles (for example, bold and underline).
 
